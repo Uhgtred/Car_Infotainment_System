@@ -1,0 +1,43 @@
+<mxfile host="Electron" modified="2023-08-22T19:38:51.171Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="hFocfM12D44s1A9oaznf" version="21.6.8" type="device">
+  <diagram name="Seite-1" id="-2VjJTFV00PebQVn-Hf1">
+    <mxGraphModel dx="2058" dy="1188" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ngzUgmsreJfInocwCasy-2" value="CAN_MessageManager" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="160" y="390" width="380" height="365" as="geometry" />
+        </mxCell>
+        <mxCell id="IL8WAM_x9eWzcNovHGls-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;endArrow=block;endFill=0;" parent="1" source="ngzUgmsreJfInocwCasy-3" target="IL8WAM_x9eWzcNovHGls-1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ngzUgmsreJfInocwCasy-3" value="CAN_Transceiver" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="192.5" y="585" width="310" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="ngzUgmsreJfInocwCasy-4" value="- can_message" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="ngzUgmsreJfInocwCasy-3" vertex="1">
+          <mxGeometry y="26" width="310" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="ngzUgmsreJfInocwCasy-5" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="ngzUgmsreJfInocwCasy-3" vertex="1">
+          <mxGeometry y="52" width="310" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="IL8WAM_x9eWzcNovHGls-12" value="+ receiveCAN_Message(SerialCommunitcationArduino)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="ngzUgmsreJfInocwCasy-3" vertex="1">
+          <mxGeometry y="60" width="310" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="IL8WAM_x9eWzcNovHGls-13" value="+ sendCAN_Message(SerialCommunitcationArduino)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="ngzUgmsreJfInocwCasy-3" vertex="1">
+          <mxGeometry y="86" width="310" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="IL8WAM_x9eWzcNovHGls-1" value="&lt;i&gt;CAN_TransceiverInterface&lt;br&gt;&amp;lt;&amp;lt;interface&amp;gt;&amp;gt;&lt;br&gt;&lt;/i&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="190" y="430" width="315" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="IL8WAM_x9eWzcNovHGls-3" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="IL8WAM_x9eWzcNovHGls-1" vertex="1">
+          <mxGeometry y="40" width="315" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="IL8WAM_x9eWzcNovHGls-4" value="+ receiveCAN_Message(SerialCommunitcationArduino)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="IL8WAM_x9eWzcNovHGls-1" vertex="1">
+          <mxGeometry y="48" width="315" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="IL8WAM_x9eWzcNovHGls-5" value="+ sendCAN_Message(SerialCommunitcationArduino)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="IL8WAM_x9eWzcNovHGls-1" vertex="1">
+          <mxGeometry y="74" width="315" height="26" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
