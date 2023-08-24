@@ -3,20 +3,20 @@
 
 import serial
 
-from Configurations.ConfigReader import ConfigReader
+#from Configurations.ConfigReader import ConfigReader
 
 
 class Arduino:
 
     def __init__(self):
-        self.__conf: ConfigReader = ConfigReader()
-        self.port: str = self.__conf.readConfigParameter('ArduinoPort')
-        self.baudRate: int = int(self.__conf.readConfigParameter('ArduinoBaudRate'))
-        self.delay: float = float(self.__conf.readConfigParameter('SerialTimeOut'))
+        #self.__conf: ConfigReader = ConfigReader()
+        self.port: str = 'COM1' #self.__conf.readConfigParameter('ArduinoPort')
+        self.baudRate: int = 9600 #int(self.__conf.readConfigParameter('ArduinoBaudRate'))
+        self.delay: float = 0.5 #float(self.__conf.readConfigParameter('SerialTimeOut'))
 
     @staticmethod
     def close(arduino: serial.Serial) -> None:
-        if arduino.is_open():
+        if arduino.is_open:
             arduino.close()
 
     @property
@@ -36,7 +36,7 @@ class Arduino:
         device = serial.Serial()
         device.baud = self.baudRate
         device.port = self.port
-        if not device.is_open():
+        if not device.is_open:
             device.open()
         device.delay = self.delay
         return device

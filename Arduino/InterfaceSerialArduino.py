@@ -31,10 +31,10 @@ class InterfaceSerialArduino(ABC):
         """
         ...
 
-    def __exit__(self):
-        """
-        could potentially lead to closing the serial-connection before being able to use it
-        :return:
-        """
-        print('!!!!SERIAL CONNECTION GOT CLOSED!!!!')
-        self.connection.close()
+    # def __exit__(self):
+    #     """
+    #     could potentially lead to closing the serial-connection before being able to use it
+    #     :return:
+    #     """
+    #     print('!!!!SERIAL CONNECTION GOT CLOSED!!!!')
+    #     self.connection.close()
