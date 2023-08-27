@@ -3,6 +3,7 @@
 import asyncio
 import logging
 
+from .Arduino import Arduino
 from .InterfaceSerialArduino import InterfaceSerialArduino
 
 
@@ -13,9 +14,8 @@ class CommunicationSerialArduino(InterfaceSerialArduino):
 
     # lock for avoiding multiple concurrent access on serial bus
     __lineBlocked = False
-
-    def __int__(self):
-        super().__init__()
+    # connection object to the serial-bus
+    connection = Arduino().arduino
 
     async def sendSerialMessage(self, message: bytes) -> None:
         """
@@ -57,6 +57,9 @@ class CommunicationSerialArduino(InterfaceSerialArduino):
         :param notification: method that the received message shall be passed to
         """
         while True:
+            # prioritising writing to the bus
+            if self.connection.out_waiting > 0:
+                continue
             await self.__waitForOpenSerialPort()
             self.__lineBlocked = True
             """

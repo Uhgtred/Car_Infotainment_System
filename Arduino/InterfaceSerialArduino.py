@@ -8,13 +8,6 @@ from Arduino import Arduino
 
 class InterfaceSerialArduino(ABC):
 
-    def __init__(self):
-        """
-        Initializing the arduino-object
-        """
-        arduino = Arduino()
-        self.connection = arduino.arduino
-
     @abstractmethod
     async def sendSerialMessage(self, message: bytes) -> None:
         """
