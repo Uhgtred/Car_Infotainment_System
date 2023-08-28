@@ -9,7 +9,7 @@ class InterfaceEventManager(ABC):
     """
 
     @abstractmethod
-    def subscribeToEvent(self, event: str, callbackMethod: any):
+    def subscribeToEvent(self, event: str, callbackMethod: any, moduleMainMethod) -> None:
         """
         Method for subscribing to
         """
