@@ -2,36 +2,41 @@
 # @author: Markus Kösters
 import multiprocessing
 
-from Processes import ProcessManager
-from .EventReceiver import EventReceiver
+from Processes import ProcessManager, InterfaceEventProcess
 from .InterfaceEventManager import InterfaceEventManager
 
 
 class EventManager(InterfaceEventManager):
-    __eventPipes = []
-    __subscribers = {}
+    """
+    Class that is handling events from processes that are registered
+    """
+
+    __registeredProcesses = {str: list(tuple)}
+    __eventProgramExit = ['all', 'exit']
 
     def __init__(self):
-        self.eventReceiver = EventReceiver()
         self.processManager = ProcessManager()
 
-    def subscribeToEvent(self, event: str, callbackMethod: any, moduleMainMethod) -> None:
+    def registerProcess(self, eventProcess: InterfaceEventProcess) -> None:
         """
-        Adding the event to subscribers-dictionary if not yet in there.
-        :param event: string representing the event that shall be subscribed to
-        :param callbackMethod: method that shall be called on event
+        Method for registering processes to a specified event
+        :param eventProcess: object containing multiple information about the process to be registered
+        object can be created using InterfaceEventProcess (see ExampleEventProcess for example).
         """
-        if event not in self.__subscribers:
-            self.__subscribers[event] = []
-        if callbackMethod not in self.__subscribers[event]:
-            parentPipe, childPipe = multiprocessing.Pipe()
-            callBackData = (parentPipe, callbackMethod)
-            self.processManager.openSubprocess(moduleMainMethod, childPipe)
-            # adding a tuple of data to the dictionary containing the subscribers data
-            self.__subscribers[event].append(callBackData)
+        if eventProcess.event not in self.__registeredProcesses:
+            self.__registeredProcesses[eventProcess.event] = []
+        if eventProcess.callbackMethod not in self.__registeredProcesses[eventProcess.event]:
+            self.__registeredProcesses[eventProcess.event].append(eventProcess)
 
-    def __notifySubscribers(self, event: str, message: any):
-        for subscriber in self.__subscribers:
-            if subscriber[0] == event:
+    def __notifySubscribers(self, event: str, message: any) -> None:
+        """
+        Notifying the registered processes of the specified event
+        :param event: name of the event used for identification
+        :param message: data that shall be passed to the callback-method of the registered process
+        """
+        for eventID in self.__registeredProcesses:
+            if eventID != event and event != 'all':
+                continue
+            for eventProcess in self.__registeredProcesses[eventID]:
                 # sending the method that is to be executed and the message provided to that method
-                subscriber[0].send((subscriber[1], message))
+                eventProcess.parentPipe.send(eventProcess.callbackMethod, message)

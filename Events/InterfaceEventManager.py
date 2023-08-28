@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # @author: Markus Kösters
+import this
 from abc import abstractmethod, ABC
+from Processes import InterfaceEventProcess
 
 
 class InterfaceEventManager(ABC):
@@ -9,8 +11,8 @@ class InterfaceEventManager(ABC):
     """
 
     @abstractmethod
-    def subscribeToEvent(self, event: str, callbackMethod: any, moduleMainMethod) -> None:
+    def registerProcess(self, eventProcess: InterfaceEventProcess) -> None:
         """
-        Method for subscribing to
+        Method for registering a process to the eventhandler
         """
         ...

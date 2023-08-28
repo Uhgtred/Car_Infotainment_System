@@ -13,13 +13,17 @@ class ProcessManager:
     def __init__(self):
         self.eventReceiver = EventReceiver()
 
-    def openSubprocess(self, moduleMainMethod, childPipe: multiprocessing.Pipe) -> None:
+    def openSubprocess(self, moduleMainMethod: any) -> multiprocessing.Pipe:
         """
-        TODO: some description
+        Method for opening a subprocess
+        :param moduleMainMethod: Method that shall be executed in new process
+        :return: parentPipe, childPipe which can communicate to the process (parentPipe.send(something)/something=parentPipe.recv())
         """
+        parentPipe, childPipe = multiprocessing.Pipe()
         process = multiprocessing.Process(target=self.eventReceiver.startEventReceiver, args=(moduleMainMethod, childPipe))
         process.start()
         self.__runningProcesses.append(process)
+        return parentPipe, childPipe
 
     @property
     def exit(self) -> bool:
