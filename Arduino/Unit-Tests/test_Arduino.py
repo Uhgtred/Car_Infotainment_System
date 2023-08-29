@@ -1,12 +1,12 @@
 import unittest
 import serial
 
-from Arduino import Arduino
+from Arduino import ArduinoConnector
 
 
 class MyTestCase(unittest.TestCase):
 
-    arduinoClassObject = Arduino()
+    arduinoClassObject = ArduinoConnector()
 
     def test_canMakeArduinoObject(self):
         arduino = self.arduinoClassObject.arduino

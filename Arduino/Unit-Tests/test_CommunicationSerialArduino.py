@@ -9,7 +9,7 @@ class MyTestCase(unittest.TestCase):
     communicationClassObject = CommunicationSerialArduino()
 
     def test_canHookMessageLoop(self):
-        self.communicationClassObject.linkSerialReadLoopToNotification(self.getNotified)
+        self.communicationClassObject.subscribeSerialReadLoop(self.getNotified)
 
     def getNotified(self, message):
         print(f'Message: {message}')

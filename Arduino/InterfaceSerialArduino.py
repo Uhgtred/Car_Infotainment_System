@@ -3,7 +3,7 @@
 
 from abc import ABC, abstractmethod
 
-from Arduino import Arduino
+from Arduino import ArduinoConnector
 
 
 class InterfaceSerialArduino(ABC):
@@ -17,17 +17,21 @@ class InterfaceSerialArduino(ABC):
         ...
 
     @abstractmethod
-    async def readSerialMessage(self, notification: classmethod) -> None:
+    async def readSerialMessage(self, callbackMethod: callable) -> None:
         """
-        Interface for reading a message from Arduino
-        :return: message in bytes-format. Decode by using message.decode()
+        Interface for reading a single message from Arduino
+        :param callbackMethod: method, that shall be called when a message has been received
+                                and which the message is being passed to as an argument
+        :return: message in bytes-format to the callbackMethod. Decode by using message.decode()
         """
         ...
 
-    # def __exit__(self):
-    #     """
-    #     could potentially lead to closing the serial-connection before being able to use it
-    #     :return:
-    #     """
-    #     print('!!!!SERIAL CONNECTION GOT CLOSED!!!!')
-    #     self.connection.close()
+    @abstractmethod
+    def subscribeSerialReadLoop(self, callbackMethod: callable) -> None:
+        """
+        Interface for subscribing to a Loop reading all messages passed from arduino
+        :param callbackMethod: method, that shall be called when a message has been received
+                                and which the message is being passed to as an argument
+        :return: message in bytes-format to the callbackMethod. Decode by using message.decode()
+        """
+        ...
