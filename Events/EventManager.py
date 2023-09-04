@@ -1,42 +1,67 @@
 #!/usr/bin/env python3
 # @author: Markus Kösters
-import multiprocessing
 
-from Processes import ProcessManager, InterfaceEventProcess
+from typing import Protocol
+
 from .InterfaceEventManager import InterfaceEventManager
+
+
+class Event(Protocol):
+    """
+    Protocol for prescribing the structure of a concrete Event.
+    """
+    name: str
+    subscribeTo: str
+
+    def setupEvent(self) -> None:
+        """
+        Method for configuring the concrete Event.
+        """
+        ...
+
+    def receiveEventUpdate(self, data: any) -> None:
+        """
+        Method for receiving updates from the subscribed event.
+        :param data: Data that shall be received from the subscribed event.
+        """
+        ...
+
+    def postEventUpdate(self, data: any) -> None:
+        """
+        Method for posting event-updates to the Event-Manager.
+        :param data: Data that shall be shared with the subscribers.
+        """
+        ...
 
 
 class EventManager(InterfaceEventManager):
     """
-    Class that is handling events from processes that are registered
+    Class that is handling events.
     """
 
-    __registeredProcesses = {str: list(tuple)}
+    # format of subscribers-list: {event:[subscribers]}
+    __subscribedEvents = {str: list(str)}
     __eventProgramExit = ['all', 'exit']
 
-    def __init__(self):
-        self.processManager = ProcessManager()
+    def subscribeToEvent(self, event: Event) -> None:
+        """
+        Method for registering event-callbackMethod to a specified event
+        :param event: Object of type class Event, with attributes: name: str and subscribeTo: str
+        """
+        # checks if eventName is already in dict and returns it,
+        # else sets it as key and empty list as value
+        subscribedEventList = self.__subscribedEvents.setdefault(event.subscribeTo, [])
+        if event.name not in subscribedEventList:
+            subscribedEventList.append(event.name)
 
-    def registerProcess(self, eventProcess: InterfaceEventProcess) -> None:
+    def __notifySubscribers(self, eventName: Event.name, message: any) -> None:
         """
-        Method for registering processes to a specified event
-        :param eventProcess: object containing multiple information about the process to be registered
-        object can be created using InterfaceEventProcess (see ExampleEventProcess for example).
+        Notifying the registered processes of the specified event.
+        :param eventName: Name of the event used for identification.
+        :param message: Data that shall be passed to the receiveEventUpdate-method of subscribed event.
         """
-        if eventProcess.event not in self.__registeredProcesses:
-            self.__registeredProcesses[eventProcess.event] = []
-        if eventProcess.callbackMethod not in self.__registeredProcesses[eventProcess.event]:
-            self.__registeredProcesses[eventProcess.event].append(eventProcess)
+        #
+        subscribedCallbacksList = self.__subscribedEvents.get(eventName)
+        for subscriber in subscribedCallbacksList:
+            subscriber.receiveEventUpdate(message)
 
-    def __notifySubscribers(self, event: str, message: any) -> None:
-        """
-        Notifying the registered processes of the specified event
-        :param event: name of the event used for identification
-        :param message: data that shall be passed to the callback-method of the registered process
-        """
-        for eventID in self.__registeredProcesses:
-            if eventID != event and event != 'all':
-                continue
-            for eventProcess in self.__registeredProcesses[eventID]:
-                # sending the method that is to be executed and the message provided to that method
-                eventProcess.parentPipe.send(eventProcess.callbackMethod, message)

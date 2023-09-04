@@ -2,7 +2,8 @@
 # @author: Markus Kösters
 import this
 from abc import abstractmethod, ABC
-from Processes import InterfaceEventProcess
+
+from Events.EventManager import Event
 
 
 class InterfaceEventManager(ABC):
@@ -11,7 +12,7 @@ class InterfaceEventManager(ABC):
     """
 
     @abstractmethod
-    def registerProcess(self, eventProcess: InterfaceEventProcess) -> None:
+    def subscribeToEvent(self, eventName: Event.subscribeTo) -> None:
         """
         Method for registering a process to the eventhandler
         """
