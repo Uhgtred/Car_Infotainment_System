@@ -1,37 +1,9 @@
 #!/usr/bin/env python3
 # @author: Markus Kösters
+from typing import Iterable
 
-from typing import Protocol
-
+from .Event import Event
 from .InterfaceEventManager import InterfaceEventManager
-
-
-class Event(Protocol):
-    """
-    Protocol for prescribing the structure of a concrete Event.
-    """
-    name: str
-    subscribeTo: str
-
-    def setupEvent(self) -> None:
-        """
-        Method for configuring the concrete Event.
-        """
-        ...
-
-    def receiveEventUpdate(self, data: any) -> None:
-        """
-        Method for receiving updates from the subscribed event.
-        :param data: Data that shall be received from the subscribed event.
-        """
-        ...
-
-    def postEventUpdate(self, data: any) -> None:
-        """
-        Method for posting event-updates to the Event-Manager.
-        :param data: Data that shall be shared with the subscribers.
-        """
-        ...
 
 
 class EventManager(InterfaceEventManager):
@@ -40,28 +12,48 @@ class EventManager(InterfaceEventManager):
     """
 
     # format of subscribers-list: {event:[subscribers]}
-    __subscribedEvents = {str: list(str)}
+    __subscribedEvents = {str: Iterable[Event]}
     __eventProgramExit = ['all', 'exit']
 
-    def subscribeToEvent(self, event: Event) -> None:
+    def subscribeToEvent(self, subscriber: Event, eventName: str) -> None:
         """
-        Method for registering event-callbackMethod to a specified event
-        :param event: Object of type class Event, with attributes: name: str and subscribeTo: str
+        Method for registering a process to the Event-Manager.
+        :param subscriber: Object of the class that going to be subscribed.
+        :param eventName: Name of the event that is going to be subscribed to.
         """
         # checks if eventName is already in dict and returns it,
         # else sets it as key and empty list as value
-        subscribedEventList = self.__subscribedEvents.setdefault(event.subscribeTo, [])
-        if event.name not in subscribedEventList:
-            subscribedEventList.append(event.name)
+        subscribedEventList = self.__subscribedEvents.setdefault(eventName, [])
+        for eventName in subscribedEventList:
+            if subscriber not in eventName:
+                subscribedEventList.append(subscriber)
 
-    def __notifySubscribers(self, eventName: Event.name, message: any) -> None:
+    def __notifySubscribers(self, eventName: str, data: any) -> None:
         """
         Notifying the registered processes of the specified event.
-        :param eventName: Name of the event used for identification.
-        :param message: Data that shall be passed to the receiveEventUpdate-method of subscribed event.
+        :param eventName: Name of the event posting an update.
+        :param data: Data that shall be passed to the receiveEventUpdate-method of subscribed event(s).
         """
-        #
         subscribedCallbacksList = self.__subscribedEvents.get(eventName)
         for subscriber in subscribedCallbacksList:
-            subscriber.receiveEventUpdate(message)
+            subscriber.receiveEventUpdate(data)
 
+    def postEventUpdate(self, eventName: str, data: any) -> None:
+        """
+        Posting event-update to any subscribers listed.
+        :param eventName: Name of the event that is posting the update.
+        :param data: Data that shall be passed to the subscribers.
+        """
+        if eventName not in self.__subscribedEvents:
+            return
+        self.__notifySubscribers(eventName, data)
+
+    def unsubscribeFromEvent(self, subscriber: Event, eventName: str) -> None:
+        """
+        Method for unsubscribing a class from the Event-Manager.
+        :param subscriber: Object of the class that going to be unsubscribed.
+        :param eventName: Name of the event that is going to be unsubscribed from.
+        """
+        for eventName in self.__subscribedEvents:
+            if subscriber in eventName:
+                eventName.remove(subscriber)
