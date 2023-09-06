@@ -1,9 +1,20 @@
 #!/usr/bin/env python3
 # @author: Markus Kösters
-from typing import Iterable
+
+from typing import TypedDict
 
 from .Event import Event
 from .InterfaceEventManager import InterfaceEventManager
+
+
+class EventDictionary(TypedDict):
+    """
+    Class for prescribing the structure of event-subscriber-dictionary.
+    """
+    # name of the event that shall be subscribed to
+    event: str
+    # list of subscribers subscribing a specified event
+    subscribers: list
 
 
 class EventManager(InterfaceEventManager):
@@ -12,7 +23,7 @@ class EventManager(InterfaceEventManager):
     """
 
     # format of subscribers-list: {event:[subscribers]}
-    __subscribedEvents = {str: Iterable[Event]}
+    __subscribedEvents: EventDictionary = {}
     __eventProgramExit = ['all', 'exit']
 
     def subscribeToEvent(self, subscriber: Event, eventName: str) -> None:
@@ -24,9 +35,8 @@ class EventManager(InterfaceEventManager):
         # checks if eventName is already in dict and returns it,
         # else sets it as key and empty list as value
         subscribedEventList = self.__subscribedEvents.setdefault(eventName, [])
-        for eventName in subscribedEventList:
-            if subscriber not in eventName:
-                subscribedEventList.append(subscriber)
+        if subscriber not in subscribedEventList:
+            subscribedEventList.append(subscriber)
 
     def __notifySubscribers(self, eventName: str, data: any) -> None:
         """
@@ -54,6 +64,10 @@ class EventManager(InterfaceEventManager):
         :param subscriber: Object of the class that going to be unsubscribed.
         :param eventName: Name of the event that is going to be unsubscribed from.
         """
-        for eventName in self.__subscribedEvents:
-            if subscriber in eventName:
-                eventName.remove(subscriber)
+        if eventName not in self.__subscribedEvents:
+            return
+        listOfSubscribers = self.__subscribedEvents.get(eventName)
+        if subscriber in listOfSubscribers:
+            listOfSubscribers.remove(subscriber)
+        if len(listOfSubscribers) == 0:
+            self.__subscribedEvents.pop(eventName)
