@@ -48,7 +48,7 @@ class MyTestCase(unittest.TestCase):
         self.eventManager.subscribeToEvent(self.event, self.event.subscribeTo)
         self.event.postEventUpdate('test')
 
-    def test_canNotSubscribeSomething(self):
+    def test_canNotSubscribeToSomething(self):
         """
         Testing if a wrong event can not be subscribed to.
         """
@@ -66,6 +66,18 @@ class MyTestCase(unittest.TestCase):
                 and self.eventManager._EventManager__subscribedEvents.get('test')[0] == self.event):
             state = True
         self.eventManager.unsubscribeFromEvent(self.event, 'Something')
+        assert (self.eventManager._EventManager__subscribedEvents != {} and state)
+
+    def test_canNotUnSubscribeSomethingFromEvent(self):
+        """
+        Testing if a specified event can be unSubscribed from.
+        """
+        state = False
+        self.eventManager.subscribeToEvent(self.event, self.event.subscribeTo)
+        if ('test' in self.eventManager._EventManager__subscribedEvents
+                and self.eventManager._EventManager__subscribedEvents.get('test')[0] == self.event):
+            state = True
+        self.eventManager.unsubscribeFromEvent('Something', self.event.subscribeTo)
         assert (self.eventManager._EventManager__subscribedEvents != {} and state)
 
 if __name__ == '__main__':
