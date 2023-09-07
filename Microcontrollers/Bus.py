@@ -55,7 +55,7 @@ class ArduinoSerialBus(Bus):
         Read a single Serial-Message from the bus.
         :param callbackMethod: Method that the received message shall be passed to.
         """
-        asyncio.run(self.readSerialMessage(callbackMethod))
+        asyncio.run(self.__asyncReadMessage(callbackMethod))
 
     def readLoop(self, callbackMethod: callable) -> None:
         """
@@ -72,9 +72,9 @@ class ArduinoSerialBus(Bus):
         :return:
         """
         message = self.messageFormatter.encodeMessage(message)
-        asyncio.run(self.sendSerialMessage(message))
+        asyncio.run(self.__asyncSendMessage(message))
 
-    async def sendSerialMessage(self, message: bytes) -> None:
+    async def __asyncSendMessage(self, message: bytes) -> None:
         """
         Sending a message to the microcontroller.
         Use like this: asyncio.run(sendSerialMessage(b"Hello World"))
@@ -83,7 +83,7 @@ class ArduinoSerialBus(Bus):
         self.__sendBuffer.append(message)
         await self.__executeBlocking(self.__busConnection.write, self.__sendBuffer)
 
-    async def readSerialMessage(self, callbackMethod: callable) -> None:
+    async def __asyncReadMessage(self, callbackMethod: callable) -> None:
         """
         A loop reading messages from microcontroller and returning them to a defined method as an argument
         Use this with asyncio.run() or await or just use the method: subscribeSerialReadLoop,

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # @author      Markus Kösters
-
+import atexit
 from abc import ABC, abstractmethod
 
-from . import Arduino
+from .Microcontroller import Arduino
 from .Message import Message, SerialMessage
-from .Bus import Bus, ArduinoSerialBus
+from .Bus import ArduinoSerialBus
 
 
 class Transceiver(ABC):
@@ -31,9 +31,13 @@ class Transceiver(ABC):
 
 
 class CAN_Transceiver(Transceiver):
+    """
+    Method for sending and receiving can-messages through serial connection to arduino.
+    """
+    arduino = Arduino()
 
     def __init__(self):
-        self.arduino = Arduino()
+        atexit.register(self.exitHandler)
         self.__bus = ArduinoSerialBus(self.arduino.open())
         self.__messageFormatter = SerialMessage()
 
@@ -43,23 +47,17 @@ class CAN_Transceiver(Transceiver):
         :param callbackMethod: Method that the message <str> shall be passed to.
         :param loop: Defines if all Messages (True) shall be read from Bus or just a single Message(False).
         """
-        try:
-            if loop:
-                self.__bus.readLoop(callbackMethod)
-            else:
-                self.__bus.read(callbackMethod)
-        finally:
-            self.exitHandler()
+        if loop:
+            self.__bus.readLoop(callbackMethod)
+        else:
+            self.__bus.read(callbackMethod)
 
     def sendMessage(self, message: SerialMessage.encodeMessage) -> None:
         """
         Method that send messages to serial-bus of Arduino
         :param message: <str> CAN-Message that shall be sent.
         """
-        try:
-            self.__bus.send(self.__messageFormatter.encodeMessage(message))
-        finally:
-            self.exitHandler()
+        self.__bus.send(self.__messageFormatter.encodeMessage(message))
 
     def exitHandler(self):
         self.arduino.close()
