@@ -1,12 +1,12 @@
 import asyncio
 import unittest
 
-from Arduino import CommunicationSerialArduino
+from Arduino import ArduinoSerialBus
 
 
 class MyTestCase(unittest.TestCase):
 
-    communicationClassObject = CommunicationSerialArduino()
+    communicationClassObject = ArduinoSerialBus()
 
     def test_canHookMessageLoop(self):
         self.communicationClassObject.subscribeSerialReadLoop(self.getNotified)
