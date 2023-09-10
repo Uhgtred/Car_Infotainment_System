@@ -3,6 +3,10 @@
 
 from typing import Protocol
 
+from Events import EventManager
+from Events.EventFactory import EventObjectFactory
+from Microcontrollers.Transceiver import CAN_Transceiver
+
 
 class Event(Protocol):
     """
@@ -17,16 +21,33 @@ class Event(Protocol):
         """
         ...
 
-    def receiveEventUpdate(self, data: any) -> None:
+    @staticmethod
+    def __postEventUpdate(module: callable, manager: EventManager) -> None:
         """
-        Method for receiving updates from the subscribed event.
-        :param data: Data that shall be received from the subscribed event.
+        Method for posting event-updates to the Event-Manager.
         """
         ...
 
-    def postEventUpdate(self, data: any) -> None:
+
+class CAN_TransceiverEvent:
+
+    name: str = 'can_transceiver'
+    subscribeTo: str = 'sendCAN_message'
+
+    def setupEvent(self) -> None:
         """
-        Method for posting event-updates to the Event-Manager.
-        :param data: Data that shall be shared with the subscribers.
+        Method for configuring the concrete Event.
         """
-        ...
+        can_transceiver = EventObjectFactory(CAN_Transceiver, self.name, self.subscribeTo)
+        manager = EventManager()
+        self.__postEventUpdate(can_transceiver.module, manager)
+        manager.subscribeToEvent(can_transceiver.module, self.subscribeTo)
+
+    @staticmethod
+    def __postEventUpdate(module: callable, manager: EventManager) -> None:
+        """
+        Method for constantly posting can-messages from the arduino
+        to the Event-Manager.
+        """
+        callbackMethod = manager.postEventUpdate
+        module.receiveMessage(callbackMethod, loop=True)
