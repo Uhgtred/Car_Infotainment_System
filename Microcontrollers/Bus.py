@@ -55,7 +55,20 @@ class ArduinoSerialBus(Bus):
         Read a single Serial-Message from the bus.
         :param callbackMethod: Method that the received message shall be passed to.
         """
-        asyncio.run(self.__asyncReadMessage(callbackMethod))
+        # prioritising writing to the bus
+        if len(self.__sendBuffer) > 0:
+            return
+        message = self.__executeBlocking(self.__busConnection.readline)
+        message = self.messageFormatter.decodeMessage(message)  # turning byte-message to string
+        callbackMethod(message)
+        """
+        This code-block might be more stable then the one-liner
+        """
+        # message = b''
+        # receivedByte = b''
+        # endByte = b'&'
+        # while receivedByte != endByte:
+        #    message += self.connection.read()
 
     def readLoop(self, callbackMethod: callable) -> None:
         """
@@ -72,42 +85,10 @@ class ArduinoSerialBus(Bus):
         :return:
         """
         message = self.messageFormatter.encodeMessage(message)
-        asyncio.run(self.__asyncSendMessage(message))
-
-    async def __asyncSendMessage(self, message: bytes) -> None:
-        """
-        Sending a message to the microcontroller.
-        Use like this: asyncio.run(sendSerialMessage(b"Hello World"))
-        :param message: message that shall be sent
-        """
-        self.__sendBuffer.append(message)
-        await self.__executeBlocking(self.__busConnection.write, self.__sendBuffer)
-
-    async def __asyncReadMessage(self, callbackMethod: callable) -> None:
-        """
-        A loop reading messages from microcontroller and returning them to a defined method as an argument
-        Use this with asyncio.run() or await or just use the method: subscribeSerialReadLoop,
-        which will handle that stuff for you.
-        :param callbackMethod: Method that the received message shall be passed to.
-        """
-        # prioritising writing to the bus
-        if len(self.__sendBuffer) > 0:
-            return
-        message = await self.__executeBlocking(self.__busConnection.readline)
-        message = self.messageFormatter.decodeMessage(message)  # turning byte-message to string
-        await callbackMethod(message)
-
-        """
-        This code-block might be more stable then the one-liner
-        """
-        # message = b''
-        # receivedByte = b''
-        # endByte = b'&'
-        # while receivedByte != endByte:
-        #    message += self.connection.read()
+        self.__busConnection.write(message)
 
     @staticmethod
-    async def __executeBlocking(method: callable, args: list[bytes] = None) -> bytes | None:
+    def __executeBlocking(method: callable, args: list[bytes] = None) -> bytes | None:
         """
         Executing a blocking read-/write operation on serial-bus
         :param method: method that shall be executed
@@ -115,12 +96,12 @@ class ArduinoSerialBus(Bus):
         :return: bytes if read-operation is being executed
         """
         if args:
-            await method(args.pop(0))
+            method(args.pop(0))
         else:
-            answer = await method()
+            answer = method()
             return answer
 
-    def exitHandler(self):
+    def exitHandler(self) -> None:
         """
         Closing the Serial-connection, when class-destructor is being called
         """
