@@ -24,7 +24,6 @@ class EventManager(InterfaceEventManager):
 
     # format of subscribers-list: {event:[subscribers]}
     __subscribedEvents: EventDictionary = {}
-    __eventProgramExit = ['all', 'exit']
 
     def subscribeToEvent(self, subscriber: Event, eventName: str) -> None:
         """
