@@ -17,6 +17,7 @@ class Main:
     """
     Main-program. Starts and organizes any submodules
     """
+    # TODO: put this list into a confi-file with json-format.
     __events: list[EventDictionary] = [{'module':CAN_Transceiver, 'name': 'can_transceiver', 'subscribeTo': ''}]
 
     def __init__(self):
@@ -25,7 +26,7 @@ class Main:
 
     def connectEvents(self) -> None:
         """
-        Method for starting all events.
+        Method for starting all events listed in the dictionary.
         """
         for eventDictionary in self.__events:
             eventObject = eventDictionary.get('module')

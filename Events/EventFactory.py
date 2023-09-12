@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 # @author      Markus Kösters
+
 from dataclasses import dataclass
 
-from Events import EventManager
+from .EventManager import EventManager
+from .Event import Event
 
 
 @dataclass
 class EventObjectFactory:
     """
     Factory for creating an object that can be handled by the Eventmanager.
+    EVENT-FACTORY IS USING THIS, NO NEED TO USE IT MANUALLY!
     """
     module: callable
     name: str
@@ -24,24 +27,30 @@ class EventObjectFactory:
         module.subscribeTo = self.subscribeTo
         return module
 
+
 class EventFactory:
 
-    def setupEvent(self, eventObject: callable, name: str, subscribeTo: str) -> None:
+    def __init__(self):
+        self.manager = EventManager()
+
+    def setupEvent(self, module: Event, name: str, subscribeTo: str) -> None:
         """
         Method for configuring the concrete Event.
+        :param module: reference of the class that shall be instanced and used as an event.
+        :param name: naming for the event, that is being used to subscribe other events to.
+        :param subscribeTo: string representing the event that this module shall be subscribed to.
         """
-        instanceObject = EventObjectFactory(eventObject, name, subscribeTo)
-        manager = EventManager()
-        self.__postEventUpdate(instanceObject.module, manager)
-        manager.subscribeToEvent(instanceObject.module, subscribeTo)
+        factory = EventObjectFactory(module, name, subscribeTo)
+        instanceObject = factory.createEventObject()
+        # enabling Event to send an update to the event-manager
+        self.__configurePostEventUpdate(instanceObject)
+        # enabling Event to receive an update FROM event-manager
+        self.manager.subscribeToEvent(instanceObject, subscribeTo)
 
-    @staticmethod
-    def __postEventUpdate(module: callable, manager: EventManager) -> None:
+    def __configurePostEventUpdate(self, instanceObject: callable) -> None:
         """
-        Method for constantly posting can-messages from the arduino
-        to the Event-Manager.
-        :param module: instance-object of the event that is being setup
-        :param manager: instance-object of the eventmanager
+        Method for constantly posting updates to the subscribers.
+        :param instanceObject: instance-object of the event that is being setup
         """
-        callbackMethod = manager.postEventUpdate
-        module.receiveMessage(callbackMethod, loop=True)
+        callbackMethod = self.manager.postEventUpdate
+        instanceObject.sendMessage(callbackMethod, loop=True)
