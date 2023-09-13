@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 # @author      Markus Kösters
-import asyncio
-import atexit
-from abc import abstractmethod, ABC
 
+import atexit
+import time
+from abc import abstractmethod, ABC
 import serial
 
 from .Message import Message, SerialMessage
-from .Microcontroller import Arduino
 
 
 class Bus(ABC):
@@ -16,16 +15,9 @@ class Bus(ABC):
     """
 
     @abstractmethod
-    def read(self, callbackMethod: callable) -> None:
+    def read(self) -> any:
         """
         Method for reading a single message from a Bus.
-        """
-        ...
-
-    @abstractmethod
-    def readLoop(self, callbackMethod: callable) -> None:
-        """
-        Method for reading from a Bus in a loop.
         """
         ...
 
@@ -33,6 +25,7 @@ class Bus(ABC):
     def send(self, message: Message.encodeMessage) -> None:
         """
         Method for properly closing a connection to a Microcontroller.
+        :param message: Message that shall be sent to the bus
         """
         ...
 
@@ -45,22 +38,21 @@ class ArduinoSerialBus(Bus):
     __busConnection: serial.Serial
 
     def __init__(self, busConnection: serial.Serial):
-        # Close serial connection, if program closes
+        # Close serial connection, when program closes
         atexit.register(self.exitHandler)
-        self.__busConnection = busConnection
+        self.__busConnection = busConnection.open()
         self.messageFormatter = SerialMessage()
 
-    def read(self, callbackMethod: callable) -> None:
+    def read(self) -> bytes:
         """
         Read a single Serial-Message from the bus.
-        :param callbackMethod: Method that the received message shall be passed to.
         """
         # prioritising writing to the bus
-        if len(self.__sendBuffer) > 0:
-            return
+        while len(self.__sendBuffer) > 0:
+            time.sleep(0.1)
         message = self.__executeBlocking(self.__busConnection.readline)
-        message = self.messageFormatter.decodeMessage(message)  # turning byte-message to string
-        callbackMethod(message)
+        return message
+        #callbackMethod(self.name, message)
         """
         This code-block might be more stable then the one-liner
         """
@@ -70,15 +62,7 @@ class ArduinoSerialBus(Bus):
         # while receivedByte != endByte:
         #    message += self.connection.read()
 
-    def readLoop(self, callbackMethod: callable) -> None:
-        """
-        Reading serial-messages in an async-loop
-        :param callbackMethod: Method that the received message shall be passed to.
-        """
-        while True:
-            self.read(callbackMethod)
-
-    def send(self, message: SerialMessage.encodeMessage) -> None:
+    def send(self, message: str | bytes) -> None:
         """
         Sending a message to the microcontroller.
         :param message:
@@ -90,6 +74,7 @@ class ArduinoSerialBus(Bus):
     @staticmethod
     def __executeBlocking(method: callable, args: list[bytes] = None) -> bytes | None:
         """
+        TODO: check if this is still needed!
         Executing a blocking read-/write operation on serial-bus
         :param method: method that shall be executed
         :param args: (necessary for write-operation) list of messages <bytes> that shall be sent

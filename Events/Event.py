@@ -1,53 +1,25 @@
 #!/usr/bin/env python3
-# @author      Markus Kösters
+# @author: Markus Kösters
 
 from typing import Protocol
-
-from Events import EventManager
-from Events.EventFactory import EventObjectFactory
-from Microcontrollers.Transceiver import CAN_Transceiver
 
 
 class Event(Protocol):
     """
-    Protocol for prescribing the structure of a concrete Event.
+    Protocol to prescribe the structure of an Event.
     """
-    name: str
-    subscribeTo: str
 
-    def setupEvent(self) -> None:
+    def sendMessage(self, callbackMethod: callable, loop: bool = True) -> None:
         """
-        Method for configuring the concrete Event.
+        Method that sends messages to a subscribed method.
+        :param callbackMethod: EventManager.postEventUpdate, sending updates to all subscribers
+        :param loop: making the method send messages in a loop.
         """
         ...
 
-    @staticmethod
-    def __postEventUpdate(module: callable, manager: EventManager) -> None:
+    def receiveMessage(self, data: any) -> None:
         """
-        Method for posting event-updates to the Event-Manager.
+        Method to receive an event-update from a subscription.
+        :param data: data that shall be received by this method from EventManager.
         """
         ...
-
-
-class CAN_TransceiverEvent:
-
-    name: str = 'can_transceiver'
-    subscribeTo: str = 'sendCAN_message'
-
-    def setupEvent(self) -> None:
-        """
-        Method for configuring the concrete Event.
-        """
-        can_transceiver = EventObjectFactory(CAN_Transceiver, self.name, self.subscribeTo)
-        manager = EventManager()
-        self.__postEventUpdate(can_transceiver.module, manager)
-        manager.subscribeToEvent(can_transceiver.module, self.subscribeTo)
-
-    @staticmethod
-    def __postEventUpdate(module: callable, manager: EventManager) -> None:
-        """
-        Method for constantly posting can-messages from the arduino
-        to the Event-Manager.
-        """
-        callbackMethod = manager.postEventUpdate
-        module.receiveMessage(callbackMethod, loop=True)

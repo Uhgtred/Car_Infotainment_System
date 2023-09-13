@@ -4,10 +4,9 @@
 from typing import TypedDict
 
 from .Event import Event
-from .InterfaceEventManager import InterfaceEventManager
 
 
-class EventDictionary(TypedDict):
+class SubscriberDictionary(TypedDict):
     """
     Class for prescribing the structure of event-subscriber-dictionary.
     """
@@ -17,14 +16,13 @@ class EventDictionary(TypedDict):
     subscribers: list
 
 
-class EventManager(InterfaceEventManager):
+class EventManager:
     """
     Class that is handling events.
     """
 
-    # format of subscribers-list: {event:[subscribers]}
-    __subscribedEvents: EventDictionary = {}
-    __eventProgramExit = ['all', 'exit']
+    # format of subscribers-list: {event:[subscribers]} (as in class above)
+    __subscribedEvents: SubscriberDictionary = {}
 
     def subscribeToEvent(self, subscriber: Event, eventName: str) -> None:
         """
@@ -46,7 +44,7 @@ class EventManager(InterfaceEventManager):
         """
         subscribedCallbacksList = self.__subscribedEvents.get(eventName)
         for subscriber in subscribedCallbacksList:
-            subscriber.receiveEventUpdate(data)
+            subscriber.receiveMessage(data)
 
     def postEventUpdate(self, eventName: str, data: any) -> None:
         """
