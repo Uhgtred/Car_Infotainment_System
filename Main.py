@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # @author Markus Kösters
 import threading
+import time
 from typing import TypedDict, Type
 
 from Events.EventFactory import EventFactory
@@ -32,7 +33,7 @@ class Main:
             eventObject = eventDictionary.get('module')
             name = eventDictionary.get('name')
             subscribeTo = eventDictionary.get('subscribeTo')
-            self.threads.startMethodInThread(self.eventFactory.setupEvent, [eventObject, name, subscribeTo])
+            self.threads.startMethodInThread(self.eventFactory.setupEvent, name, [eventObject, name, subscribeTo])
 
 
 
@@ -44,13 +45,19 @@ class Threads:
 
     __threads: dict = {}
 
-    def startMethodInThread(self, method: callable, *args) -> None:
+    def startMethodInThread(self, method: callable, threadName: str, *args) -> None:
         """
         Method for running a passed method in a new thread.
+        :param threadName: Name for the thread for easier identification.
         :param method: Method that shall be executed in a separate thread.
         :param args: Arguments, that shall be passed to the thread.
         """
-        threadName = args[1]
-        thread = threading.Thread(target=method, args=[*args], name=threadName)
+        args = list(*args)
+        thread = threading.Thread(target=method, args=args, name=threadName)
         self.__threads[threadName] = thread
         thread.start()
+
+
+if __name__ == '__main__':
+    main = Main()
+    main.connectEvents()

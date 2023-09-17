@@ -90,4 +90,7 @@ class ArduinoSerialBus(Bus):
         """
         Closing the Serial-connection, when class-destructor is being called
         """
-        self.__busConnection.close()
+        try:
+            self.__busConnection.close()
+        except Exception as e:
+            raise Exception(f'Error while trying to close Arduino: {e}')
