@@ -44,7 +44,7 @@ class EventManager:
         """
         subscribedCallbacksList = self.__subscribedEvents.get(eventName)
         for subscriber in subscribedCallbacksList:
-            subscriber.receiveMessage(data)
+            subscriber.sendMessage(data)
 
     def postEventUpdate(self, eventName: str, data: any) -> None:
         """

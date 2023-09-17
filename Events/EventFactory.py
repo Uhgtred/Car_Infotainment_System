@@ -53,4 +53,4 @@ class EventFactory:
         :param instanceObject: instance-object of the event that is being setup
         """
         callbackMethod = self.manager.postEventUpdate
-        instanceObject.sendMessage(callbackMethod, loop=True)
+        instanceObject.receiveMessage(callbackMethod, loop=True)
