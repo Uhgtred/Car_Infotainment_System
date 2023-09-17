@@ -57,9 +57,12 @@ class Arduino(Microcontroller):
         Method for opening a Serial-connection to Microcontrollers.
         :return: Object of thee arduino-connection, that can be used to communicate with.
         """
-        if not self.__device:
-            self.__initArduino()
-            self.__device.open()
+        try:
+            if not self.__device:
+                self.__initArduino()
+                self.__device.open()
+        except Exception as e:
+            raise Exception(f'Could not start Arduino-connection: {e}')
         return self.__device
 
     def __initArduino(self):
