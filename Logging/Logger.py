@@ -7,9 +7,14 @@ from Logging.LoggingInterface import LoggingInterface
 
 
 class Logger(LoggingInterface):
-    logging.basicConfig(level=logging.INFO, filename='Logging.log', filemode='w', format='%(asctime)s | [%(levelname)s] %(message)s')
+    """
+    Class for making easy access to logging from any module.
+    """
+    loggers: list = []
+    logLevel = logging.INFO
 
-    def __logFormatter(self, fileHandler: logging.FileHandler) -> None:
+    @staticmethod
+    def __logFormatter(fileHandler: logging.FileHandler) -> None:
         """
         Method for applying the correct logging-format before writing the message into a file.
         :return: Formatter caring for the correct format of the logs.
@@ -25,19 +30,32 @@ class Logger(LoggingInterface):
         :return: File-Handler that is being used to store the log-messages into.
         """
         print(moduleName)
-        fileHandler = logging.FileHandler(f'{moduleName}.log')
+        fileHandler = logging.FileHandler(f'{moduleName}.log', mode='w')
         self.__logFormatter(fileHandler)
         return fileHandler
 
-    def createLogEntry(self, logLevel: str, moduleName: __name__, message: str):
+    def __setupLogger(self, logger: logging.getLogger, moduleName: __name__) -> None:
         """
-        Creating a log-entry using the Logging-module
-        :return:
+        Method used for configuring logger-settings.
+        :param logger: Logger that shall be configured.
+        :param moduleName: Name of the module that is getting logged. Used for creating a filename.
+        """
+        fileHandler = self.__fileHandler(moduleName)
+        logger.addHandler(fileHandler)
+        logger.setLevel(self.logLevel)
+        self.loggers.append(logger)
+
+    def createLogEntry(self, logLevel: str, moduleName: __name__, message: str) -> None:
+        """
+        Creating a log-entry into a dedicated file, using the Logging-module.
+        :param logLevel:    String representing the Log-Level.
+                            available: 'debug', 'info', 'warning', 'error', 'critical', 'exception'
+        :param moduleName:  Name of the module that is being logged.
+        :param message:     Log-Message that shall be stored.
         """
         logger = logging.getLogger(moduleName)
-        if not logger.hasHandlers():
-            fileHandler = self.__fileHandler(moduleName)
-            logger.addHandler(fileHandler)
+        if logger not in self.loggers:
+            self.__setupLogger(logger, moduleName)
         match logLevel:
             case 'debug':
                 logger.debug(message)
