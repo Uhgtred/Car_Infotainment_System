@@ -9,6 +9,10 @@ from Microcontrollers.Transceiver import Transceiver, TransceiverConfig
 
 
 class TransceiverFactory:
+    """
+    Factory for the Transceiver communicating with MicroController bus-systems.
+    TODO: Finish implementation. This is just a prototype!
+    """
 
     def initBus(self) -> Bus:
         busControllerConfig = BusConfig(serial.Serial, '/dev/ttyACM0', 115200)
