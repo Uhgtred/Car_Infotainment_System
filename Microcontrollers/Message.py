@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 # @author      Markus Kösters
 
-from abc import abstractmethod, ABC
+from typing import Protocol
 
 
-class Message(ABC):
+class Message(Protocol):
 
-    @abstractmethod
     def encodeMessage(self, message: str) -> any:
         """
         Method used for encoding messages to send by bus.
@@ -15,7 +14,6 @@ class Message(ABC):
         """
         ...
 
-    @abstractmethod
     def decodeMessage(self, message: any) -> str:
         """
         Method used for decoding messages received from bus.
@@ -25,7 +23,7 @@ class Message(ABC):
         ...
 
 
-class SerialMessage(Message):
+class SerialMessage:
     """
     Class for reading and writing a Serial-connection.
     """
@@ -52,19 +50,3 @@ class SerialMessage(Message):
         if message.endswith(decodedMessageEndByte):
             message = message.removesuffix(decodedMessageEndByte)
         return message
-
-    @property
-    def endByte(self) -> bytes:
-        """
-        Getter-Method for the End-byte of a Serial-message.
-        :return: end-byte as bytes.
-        """
-        return self.__messageEndByte
-
-    @property
-    def ID_endByte(self) -> bytes:
-        """
-        Getter-Method for the symbol that signs the end of a CAN-ID transmission.
-        :return: ID_endByte as bytes.
-        """
-        return self.__ID_endByte

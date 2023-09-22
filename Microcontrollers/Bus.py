@@ -1,96 +1,73 @@
 #!/usr/bin/env python3
 # @author      Markus Kösters
 
-import atexit
-import time
-from abc import abstractmethod, ABC
+from abc import ABC, abstractmethod
+from typing import NamedTuple
 import serial
 
-from .Message import Message, SerialMessage
+
+class BusConfig(NamedTuple):
+    bus: any
+    port: str
+    baudRate: int
 
 
 class Bus(ABC):
-    """
-    Class for prescribing the structure of how to build a bus-connection.
-    """
+
+    __config: BusConfig
+
+    def __init__(self, config: BusConfig):
+        self.__config = config
 
     @abstractmethod
-    def read(self) -> any:
+    def open(self) -> __config.bus:
         """
-        Method for reading a single message from a Bus.
+        Method for opening a connection to a bus.
+        :return: Object of the bus that has been connected
         """
         ...
 
     @abstractmethod
-    def send(self, message: Message.encodeMessage) -> None:
+    def close(self) -> None:
         """
-        Method for properly closing a connection to a Microcontroller.
-        :param message: Message that shall be sent to the bus
+        Interface-method for closing a connection to a bus.
         """
-        ...
 
 
-class ArduinoSerialBus(Bus):
+class SerialBusArduino(Bus):
     """
-    Class for async Serial-communication with arduino
+    Class for handling a serial-connection to an Arduino.
     """
-    __sendBuffer: list = []
-    __busConnection: serial.Serial
 
-    def __init__(self, busConnection: serial.Serial):
-        # Close serial connection, when program closes
-        atexit.register(self.exitHandler)
-        self.__busConnection = busConnection.open()
-        self.messageFormatter = SerialMessage()
+    __config: BusConfig
 
-    def read(self) -> bytes:
-        """
-        Read a single Serial-Message from the bus.
-        """
-        # prioritising writing to the bus
-        while len(self.__sendBuffer) > 0:
-            time.sleep(0.1)
-        message = self.__executeBlocking(self.__busConnection.readline)
-        return message
-        #callbackMethod(self.name, message)
-        """
-        This code-block might be more stable then the one-liner
-        """
-        # message = b''
-        # receivedByte = b''
-        # endByte = b'&'
-        # while receivedByte != endByte:
-        #    message += self.connection.read()
+    def __init__(self, config: BusConfig):
+        super().__init__(config)
+        self.__config.bus = None
 
-    def send(self, message: str | bytes) -> None:
+    def open(self) -> __config.bus:
         """
-        Sending a message to the microcontroller.
-        :param message:
-        :return:
-        """
-        message = self.messageFormatter.encodeMessage(message)
-        self.__busConnection.write(message)
-
-    @staticmethod
-    def __executeBlocking(method: callable, args: list[bytes] = None) -> bytes | None:
-        """
-        TODO: check if this is still needed!
-        Executing a blocking read-/write operation on serial-bus
-        :param method: method that shall be executed
-        :param args: (necessary for write-operation) list of messages <bytes> that shall be sent
-        :return: bytes if read-operation is being executed
-        """
-        if args:
-            method(args.pop(0))
-        else:
-            answer = method()
-            return answer
-
-    def exitHandler(self) -> None:
-        """
-        Closing the Serial-connection, when class-destructor is being called
+        Method for opening a Serial-connection to Microcontrollers.
+        :return: Object of thee arduino-connection, that can be used to communicate with.
         """
         try:
-            self.__busConnection.close()
+            if not self.__config.bus:
+                self.__initArduino()
         except Exception as e:
-            raise Exception(f'Error while trying to close Arduino: {e}')
+            raise Exception(f'Could not start Arduino-connection: {e}')
+        return self.__config.bus
+
+    def close(self) -> None:
+        """
+        Method for closing a connection to a bus.
+        """
+        self.__config.bus.close()
+
+    def __initArduino(self):
+        """
+        Initializing the microcontrollers serial-bus-settings.
+        """
+        self.__config.bus = serial.Serial()
+        self.__config.bus.baudRate = self.__config.baudRate
+        self.__config.bus.port = self.__config.port
+        self.__config.bus.open()

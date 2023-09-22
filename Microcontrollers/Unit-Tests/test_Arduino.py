@@ -1,12 +1,12 @@
 import unittest
 import serial
 
-from Microcontrollers.Microcontroller import Arduino
+from Microcontrollers.Bus import SerialBusArduino
 
 
 class MyTestCase(unittest.TestCase):
 
-    arduinoClassObject = Arduino()
+    arduinoClassObject = SerialBusArduino()
 
     def test_canMakeArduinoObject(self):
         arduino = self.arduinoClassObject.open()

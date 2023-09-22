@@ -1,12 +1,12 @@
 import asyncio
 import unittest
 
-from Microcontrollers import ArduinoSerialBus, Arduino, SerialMessage
+from Microcontrollers import ArduinoSerialBusReaderWriter, SerialBusArduino, SerialMessage
 
 
 class MyTestCase(unittest.TestCase):
 
-    communicationClassObject = ArduinoSerialBus(Arduino().open())
+    communicationClassObject = ArduinoSerialBusReaderWriter(SerialBusArduino().open())
 
     def test_canHookMessageLoop(self):
         self.communicationClassObject.readLoop(self.callbackMethod)

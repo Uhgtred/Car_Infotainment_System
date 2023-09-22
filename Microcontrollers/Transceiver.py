@@ -2,16 +2,24 @@
 # @author      Markus Kösters
 import atexit
 from abc import ABC, abstractmethod
-
-import serial
+from typing import NamedTuple
 
 from Events import Event
-from .Microcontroller import Arduino
-from .Message import Message, SerialMessage
-from .Bus import ArduinoSerialBus
+from .Bus import Bus
+from .Message import Message
+from .BusReaderWriter import BusReaderWriter
+
+
+class TransceiverConfig(NamedTuple):
+    bus: Bus
+    messageType: Message
+    busReaderWriter: BusReaderWriter
 
 
 class Transceiver(ABC):
+
+    def __init__(self, config: TransceiverConfig):
+        self.config = config
 
     @abstractmethod
     def receiveMessage(self, callbackMethod: Event.sendMessage, loop: bool = True) -> None:
@@ -37,15 +45,12 @@ class CAN_Transceiver(Transceiver):
     """
     Method for sending and receiving can-messages through serial connection to arduino.
     """
-    arduino: serial.Serial = Arduino()
     name: str = 'can_transceiver'
     exit_: bool = False
 
-    def __init__(self):
+    def __init__(self, config: TransceiverConfig):
+        super().__init__(config)
         atexit.register(self.exitHandler)
-        self.messageFormatter = SerialMessage()
-        self.__bus = ArduinoSerialBus(self.arduino)
-        self.__messageFormatter = SerialMessage()
 
     def receiveMessage(self, callbackMethod: Event.sendMessage, loop: bool = True) -> None:
         """
@@ -64,20 +69,20 @@ class CAN_Transceiver(Transceiver):
         Executing the read-operation in the serial-bus class and sending data to eventmanager
         :param callbackMethod: Method that the message <str> shall be passed to.
         """
-        message = self.__bus.read()
-        message = self.messageFormatter.decodeMessage(message)
+        message = self.config.busReaderWriter.read()
+        message = self.config.messageType.decodeMessage(message)
         callbackMethod(self.name, message)
 
-    def sendMessage(self, message: SerialMessage.encodeMessage) -> None:
+    def sendMessage(self, message: Message.encodeMessage) -> None:
         """
         Method that send messages to serial-bus of Arduino
         :param message: <str> CAN-Message that shall be sent.
         """
-        self.__bus.send(self.__messageFormatter.encodeMessage(message))
+        self.config.busReaderWriter.send(self.config.messageType.encodeMessage(message))
 
     def exitHandler(self):
         """
         Method for handling ordinary program exit.
         """
         self.exit_ = True
-        self.arduino.close()
+        self.config.bus.close()
