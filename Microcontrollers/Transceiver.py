@@ -12,7 +12,6 @@ from .BusReaderWriter import BusReaderWriter
 
 class TransceiverConfig(NamedTuple):
     bus: Bus
-    messageType: Message
     busReaderWriter: BusReaderWriter
 
 
@@ -32,7 +31,7 @@ class Transceiver(ABC):
         ...
 
     @abstractmethod
-    def sendMessage(self, message: Message.encodeMessage) -> None:
+    def sendMessage(self, message: str) -> None:
         """
         Method that sends messages to a bus. There needs to be a concrete
         implementation of the abstract Transceiver-class for each bus.
@@ -70,15 +69,14 @@ class CAN_Transceiver(Transceiver):
         :param callbackMethod: Method that the message <str> shall be passed to.
         """
         message = self.config.busReaderWriter.read()
-        message = self.config.messageType.decodeMessage(message)
         callbackMethod(self.name, message)
 
-    def sendMessage(self, message: Message.encodeMessage) -> None:
+    def sendMessage(self, message: str) -> None:
         """
         Method that send messages to serial-bus of Arduino
         :param message: <str> CAN-Message that shall be sent.
         """
-        self.config.busReaderWriter.send(self.config.messageType.encodeMessage(message))
+        self.config.busReaderWriter.send(message)
 
     def exitHandler(self):
         """

@@ -13,14 +13,13 @@ class BusConfig(NamedTuple):
 
 
 class Bus(ABC):
-
     __config: BusConfig
 
     def __init__(self, config: BusConfig):
         self.__config = config
 
     @abstractmethod
-    def open(self) -> __config.bus:
+    def open(self) -> any:
         """
         Method for opening a connection to a bus.
         :return: Object of the bus that has been connected
@@ -32,6 +31,13 @@ class Bus(ABC):
         """
         Interface-method for closing a connection to a bus.
         """
+
+    @abstractmethod
+    def __setupBus(self) -> object:
+        """
+        Initializing the microcontrollers bus-settings.
+        """
+        ...
 
 
 class SerialBusArduino(Bus):
@@ -45,14 +51,14 @@ class SerialBusArduino(Bus):
         super().__init__(config)
         self.__config.bus = None
 
-    def open(self) -> __config.bus:
+    def open(self) -> any:
         """
         Method for opening a Serial-connection to Microcontrollers.
         :return: Object of thee arduino-connection, that can be used to communicate with.
         """
         try:
             if not self.__config.bus:
-                self.__initArduino()
+                self.__config.bus = self.__setupBus()
         except Exception as e:
             raise Exception(f'Could not start Arduino-connection: {e}')
         return self.__config.bus
@@ -63,11 +69,12 @@ class SerialBusArduino(Bus):
         """
         self.__config.bus.close()
 
-    def __initArduino(self):
+    def __setupBus(self) -> object:
         """
-        Initializing the microcontrollers serial-bus-settings.
+        Initializing the microcontrollers bus-settings.
         """
-        self.__config.bus = serial.Serial()
-        self.__config.bus.baudRate = self.__config.baudRate
-        self.__config.bus.port = self.__config.port
-        self.__config.bus.open()
+        bus = serial.Serial()
+        bus.baudRate = self.__config.baudRate
+        bus.port = self.__config.port
+        bus.open()
+        return bus
