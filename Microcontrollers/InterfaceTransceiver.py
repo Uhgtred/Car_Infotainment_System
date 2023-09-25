@@ -12,11 +12,11 @@ from .BusReaderWriter import BusReaderWriter
 
 class TransceiverConfig(NamedTuple):
     bus: Bus
-    messageType: Message
     busReaderWriter: BusReaderWriter
+    eventName: str
 
 
-class Transceiver(ABC):
+class InterfaceTransceiver(ABC):
 
     def __init__(self, config: TransceiverConfig):
         self.config = config
@@ -32,7 +32,7 @@ class Transceiver(ABC):
         ...
 
     @abstractmethod
-    def sendMessage(self, message: Message.encodeMessage) -> None:
+    def sendMessage(self, message: str) -> None:
         """
         Method that sends messages to a bus. There needs to be a concrete
         implementation of the abstract Transceiver-class for each bus.
@@ -41,7 +41,7 @@ class Transceiver(ABC):
         ...
 
 
-class CAN_Transceiver(Transceiver):
+class Transceiver(InterfaceTransceiver):
     """
     Method for sending and receiving can-messages through serial connection to arduino.
     """
@@ -54,7 +54,7 @@ class CAN_Transceiver(Transceiver):
 
     def receiveMessage(self, callbackMethod: Event.sendMessage, loop: bool = True) -> None:
         """
-        Method for transmitting and receiving CAN-Messages from arduino-serial-bus.
+        Method for transmitting and receiving Messages from bus.
         :param callbackMethod: Method that the message <str> shall be passed to.
         :param loop: Defines if all Messages (True) shall be read from Bus or just a single Message(False).
         """
@@ -66,19 +66,18 @@ class CAN_Transceiver(Transceiver):
 
     def __readMessageFromBusAndSendToEventManager(self, callbackMethod: Event.sendMessage) -> None:
         """
-        Executing the read-operation in the serial-bus class and sending data to eventmanager
+        Executing the read-operation in the bus-class and sending data to eventmanager
         :param callbackMethod: Method that the message <str> shall be passed to.
         """
         message = self.config.busReaderWriter.read()
-        message = self.config.messageType.decodeMessage(message)
-        callbackMethod(self.name, message)
+        callbackMethod(self.config.eventName, message)
 
-    def sendMessage(self, message: Message.encodeMessage) -> None:
+    def sendMessage(self, message: str) -> None:
         """
-        Method that send messages to serial-bus of Arduino
-        :param message: <str> CAN-Message that shall be sent.
+        Method that sends messages to a bus.
+        :param message: <str> Message that shall be sent.
         """
-        self.config.busReaderWriter.send(self.config.messageType.encodeMessage(message))
+        self.config.busReaderWriter.send(message)
 
     def exitHandler(self):
         """

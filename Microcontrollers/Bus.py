@@ -2,25 +2,32 @@
 # @author      Markus Kösters
 
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from typing import NamedTuple
 import serial
 
 
-class BusConfig(NamedTuple):
+@dataclass
+class BusConfig:
+    """
+    Bus-configuration-tuple
+    :param bus: a callable class-object of the bus that shall be opened e.g.: serial.Serial.
+    :param port: Port to which the bus is listening e.g.: '/dev/ttyACM0'
+    :param baudRate: Baud-rate/frequency of the bus e.g.: 115200
+    """
     bus: any
     port: str
     baudRate: int
 
 
 class Bus(ABC):
-
-    __config: BusConfig
+    config: BusConfig
 
     def __init__(self, config: BusConfig):
-        self.__config = config
+        self.config = config
 
     @abstractmethod
-    def open(self) -> __config.bus:
+    def open(self) -> any:
         """
         Method for opening a connection to a bus.
         :return: Object of the bus that has been connected
@@ -39,35 +46,35 @@ class SerialBusArduino(Bus):
     Class for handling a serial-connection to an Arduino.
     """
 
-    __config: BusConfig
+    config: BusConfig
 
     def __init__(self, config: BusConfig):
         super().__init__(config)
-        self.__config.bus = None
 
-    def open(self) -> __config.bus:
+    def open(self) -> any:
         """
         Method for opening a Serial-connection to Microcontrollers.
         :return: Object of thee arduino-connection, that can be used to communicate with.
         """
         try:
-            if not self.__config.bus:
-                self.__initArduino()
+            self.config.bus = self.__setupBus()
         except Exception as e:
             raise Exception(f'Could not start Arduino-connection: {e}')
-        return self.__config.bus
+        return self.config.bus
 
     def close(self) -> None:
         """
         Method for closing a connection to a bus.
         """
-        self.__config.bus.close()
+        self.config.bus.close()
 
-    def __initArduino(self):
+    def __setupBus(self) -> object:
         """
-        Initializing the microcontrollers serial-bus-settings.
+        Initializing the microcontrollers bus-settings.
         """
-        self.__config.bus = serial.Serial()
-        self.__config.bus.baudRate = self.__config.baudRate
-        self.__config.bus.port = self.__config.port
-        self.__config.bus.open()
+        bus = serial.Serial()
+        bus.baudRate = self.config.baudRate
+        bus.port = self.config.port
+        if not bus.isOpen():
+            bus.open()
+        return bus

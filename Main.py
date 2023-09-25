@@ -5,7 +5,7 @@ import time
 from typing import TypedDict, Type
 
 from Events.EventFactory import EventFactory
-from Microcontrollers.Transceiver import CAN_Transceiver
+from Microcontrollers.InterfaceTransceiver import Transceiver
 
 
 class EventDictionary(TypedDict):
@@ -19,7 +19,7 @@ class Main:
     Main-program. Starts and organizes any submodules
     """
     # TODO: put this list into a confi-file with json-format.
-    __events: list[EventDictionary] = [{'module':CAN_Transceiver, 'name': 'can_transceiver', 'subscribeTo': ''}]
+    __events: list[EventDictionary] = [{'module': Transceiver, 'name': 'can_transceiver', 'subscribeTo': ''}]
 
     def __init__(self):
         self.threads = Threads()
@@ -34,7 +34,6 @@ class Main:
             name = eventDictionary.get('name')
             subscribeTo = eventDictionary.get('subscribeTo')
             self.threads.startMethodInThread(self.eventFactory.setupEvent, name, [eventObject, name, subscribeTo])
-
 
 
 class Threads:
