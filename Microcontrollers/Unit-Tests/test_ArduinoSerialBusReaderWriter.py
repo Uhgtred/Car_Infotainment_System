@@ -12,21 +12,17 @@ class MyTestCase(unittest.TestCase):
 
     busConfig = BusConfig(serial.Serial, '/dev/ttyACM0', 115200)
     myBusClass = SerialBusArduino(busConfig)
-    myBusReaderWriterConfig = BusReaderWriterConfig(myBusClass, SerialMessage)
-
-    def test_readBus(self):
-        busReaderWriter = ArduinoSerialBusReaderWriter(self.myBusReaderWriterConfig)
-        busReaderWriter.send('TEST')
-
-    def callbackMethod(self, message):
-        print(f'Message: {message}')
-        assert type(message) is bytes
+    myBusReaderWriterConfig = BusReaderWriterConfig(myBusClass, SerialMessage())
 
     def test_canReadSingleMessage(self):
-        self.communicationClassObject.read(self.callbackMethod)
+        busReaderWriter = ArduinoSerialBusReaderWriter(self.myBusReaderWriterConfig)
+        message = busReaderWriter.read()
+        assert message == 'TEST'
 
     def test_sendMessage(self):
-        self.communicationClassObject.send(SerialMessage().encodeMessage('Hello World'))
+        busReaderWriter = ArduinoSerialBusReaderWriter(self.myBusReaderWriterConfig)
+        busReaderWriter.send('Hello World')
+        assert busReaderWriter.read() == 'Hello World'
 
 if __name__ == '__main__':
     unittest.main()

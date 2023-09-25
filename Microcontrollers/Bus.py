@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import NamedTuple
 import serial
 
+
 @dataclass
 class BusConfig:
     """
