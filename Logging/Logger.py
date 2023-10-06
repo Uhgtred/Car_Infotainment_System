@@ -5,6 +5,7 @@ import logging
 
 from Logging.LoggingInterface import LoggingInterface
 
+x='test'
 
 class Logger(LoggingInterface):
     """
