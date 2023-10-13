@@ -3,7 +3,7 @@
 
 import unittest
 
-from Events import EventManager, Event
+from Events import EventManager, EventSubscriber
 from Events.EventFactory import EventObjectFactory, EventFactory
 
 
@@ -32,7 +32,11 @@ class TestEvent:
     def __init__(self):
         self.eventManager = EventManager()
 
+<<<<<<< Updated upstream
     def sendMessage(self, callbackMethod: Event.sendMessage, loop: bool = True) -> None:
+=======
+    def sendMessage(self, callbackMethod: EventSubscriber.receiveEventUpdate, loop: bool = True) -> None:
+>>>>>>> Stashed changes
         """
         Method that receives messages from an Event (optionally only one message).
         :param callbackMethod: Method that the read message shall be passed to.

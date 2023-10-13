@@ -3,36 +3,49 @@
 
 from dataclasses import dataclass
 
+<<<<<<< Updated upstream
 from .EventManager import EventManager
 from .Event import Event
+=======
+from Microcontrollers.InterfaceTransceiver import Transceiver
+from .EventSubscriber import EventSubscriber
+from .EventUpdater import EventUpdater
+>>>>>>> Stashed changes
 
 
-@dataclass
-class EventObjectFactory:
-    """
-    Factory for creating an object that can be handled by the Eventmanager.
-    EVENT-FACTORY IS USING THIS, NO NEED TO USE IT MANUALLY!
-    """
-    module: callable
-    name: str
-    subscribeTo: str
+class UpdateCanTransmitter:
 
+<<<<<<< Updated upstream
     def createEventObject(self) -> object:
+=======
+    __subscribers: list = []
+
+    def subscribe(self, module: type(EventSubscriber)) -> None:
+>>>>>>> Stashed changes
         """
-        Method creating an object of the passed module and attaching
-        the attributes needed by event-module.
+
+        :param module: method that the event-update is going to be sent to.
         """
-        module = self.module()
-        module.name = self.name
-        module.subscribeTo = self.subscribeTo
-        return module
+        self.__subscribers.append(module)
+
+    def notifySubscribers(self, data: any) -> None:
+        """
+        Sending an Event-update to all subscribers.
+        """
+        for sub in self.__subscribers:
+            sub.sendNotification(data)
 
 
+<<<<<<< Updated upstream
 class EventFactory:
+=======
+class CanTransmitter(EventSubscriber):
+>>>>>>> Stashed changes
 
     def __init__(self):
-        self.manager = EventManager()
+        self.transceiver = Transceiver('')
 
+<<<<<<< Updated upstream
     def setupEvent(self, module: Event, name: str, subscribeTo: str) -> None:
         """
         Method for configuring the concrete Event.
@@ -54,3 +67,15 @@ class EventFactory:
         """
         callbackMethod = self.manager.postEventUpdate
         instanceObject.receiveMessage(callbackMethod, loop=True)
+=======
+    def sendNotification(self, data: any) -> None:
+        """
+        The subscriber is being sent an update.
+        """
+        self.transceiver.sendMessage(data)
+
+
+channel = UpdateCanTransmitter()
+channel.subscribe(CanTransmitter())
+channel.notifySubscribers('Test')
+>>>>>>> Stashed changes

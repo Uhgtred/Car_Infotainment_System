@@ -4,7 +4,7 @@ import atexit
 from abc import ABC, abstractmethod
 from typing import NamedTuple
 
-from Events import Event
+from Events import EventSubscriber
 from .Bus import Bus
 from .Message import Message
 from .BusReaderWriter import BusReaderWriter
@@ -22,7 +22,11 @@ class InterfaceTransceiver(ABC):
         self.config = config
 
     @abstractmethod
+<<<<<<< Updated upstream
     def receiveMessage(self, callbackMethod: Event.sendMessage, loop: bool = True) -> None:
+=======
+    def receiveMessage(self, callbackMethod: EventSubscriber.receiveEventUpdate, loop: bool = True) -> None:
+>>>>>>> Stashed changes
         """
         Method that receives messages from a bus (optionally only one message).
         There needs to be a concrete implementation of the abstract Transceiver-class for each bus.
@@ -52,7 +56,11 @@ class Transceiver(InterfaceTransceiver):
         super().__init__(config)
         atexit.register(self.exitHandler)
 
+<<<<<<< Updated upstream
     def receiveMessage(self, callbackMethod: Event.sendMessage, loop: bool = True) -> None:
+=======
+    def receiveMessage(self, callbackMethod: EventSubscriber.receiveEventUpdate, loop: bool = True) -> None:
+>>>>>>> Stashed changes
         """
         Method for transmitting and receiving Messages from bus.
         :param callbackMethod: Method that the message <str> shall be passed to.
@@ -64,7 +72,11 @@ class Transceiver(InterfaceTransceiver):
         else:
             self.__readMessageFromBusAndSendToEventManager(callbackMethod)
 
+<<<<<<< Updated upstream
     def __readMessageFromBusAndSendToEventManager(self, callbackMethod: Event.sendMessage) -> None:
+=======
+    def __readMessageFromBusAndSendToEventManager(self, callbackMethod: EventSubscriber.receiveEventUpdate) -> None:
+>>>>>>> Stashed changes
         """
         Executing the read-operation in the bus-class and sending data to eventmanager
         :param callbackMethod: Method that the message <str> shall be passed to.
