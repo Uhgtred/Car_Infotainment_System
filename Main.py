@@ -4,7 +4,7 @@ import threading
 import time
 from typing import TypedDict, Type
 
-from Events.EventFactory import EventFactory
+from Events import EventFactory
 from Microcontrollers.InterfaceTransceiver import Transceiver
 
 
@@ -19,22 +19,19 @@ class Main:
     Main-program. Starts and organizes any submodules
     """
     # TODO: put this list into a confi-file with json-format.
-    __events: list[EventDictionary] = [{'module': Transceiver, 'name': 'can_transceiver', 'subscribeTo': ''}]
+    __events: list[[callable]] = [[Transceiver().sendMessage]]
 
     def __init__(self):
         self.threads = Threads()
-        self.eventFactory = EventFactory()
 
     def connectEvents(self) -> None:
         """
         Method for starting all events listed in the dictionary.
         """
-        for eventDictionary in self.__events:
-            eventObject = eventDictionary.get('module')
-            name = eventDictionary.get('name')
-            subscribeTo = eventDictionary.get('subscribeTo')
-            self.threads.startMethodInThread(self.eventFactory.setupEvent, name, [eventObject, name, subscribeTo])
-
+        for eventUserList in self.__events:
+            eventObject = EventFactory.ProduceEventUser()
+            for eventUser in eventUserList:
+                eventObject.subscribeToEvent(eventUser)
 
 class Threads:
     """

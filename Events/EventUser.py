@@ -4,15 +4,22 @@
 from abc import ABC, abstractmethod
 
 
-class EventSubscriber(ABC):
+class EventUser(ABC):
     """
     Protocol to prescribe the structure of an Event.
     """
 
     @abstractmethod
-    def sendNotification(self, data: any) -> None:
+    def subscribeToEvent(self, eventCallbackMethod: callable) -> None:
+        """
+        Method for returning event-updates to a callbackMethod.
+        """
+        pass
+
+    @abstractmethod
+    def postEventUpdate(self, data: any) -> None:
         """
         Method to send an event-update to a subscriber.
         :param data: data that shall be received by this method from EventManager.
         """
-        ...
+        pass
