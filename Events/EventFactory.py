@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # @author      Markus Kösters
 
-from Events.Event import Event
-from .EventUser import EventUser
+import Event
+import EventUser
 
 
-class ProduceEventUser(EventUser):
+class ProduceEventUser(EventUser.EventUser):
 
     def __init__(self):
         """
         Setting up an event-user.
         """
-        self.__event = Event()
+        self.__event = Event.Event()
 
     def subscribeToEvent(self, eventCallbackMethod: callable) -> None:
         """

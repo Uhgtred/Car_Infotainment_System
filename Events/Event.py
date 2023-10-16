@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # @author: Markus Kösters
 
-from Events import EventUser
+import EventUser
 
 
 # class Event(Protocol):
@@ -56,7 +56,7 @@ class Event:
     def __init__(self):
         self.__subscribers: list = []
 
-    def subscribe(self, callbackMethod: EventUser) -> None:
+    def subscribe(self, callbackMethod: EventUser.EventUser) -> None:
         """
         Subscribing to Event, receiving any updates occurring.
         :param callbackMethod: Method that the event-update is going to be sent to.
