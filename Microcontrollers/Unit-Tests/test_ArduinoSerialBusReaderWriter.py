@@ -5,7 +5,7 @@ import serial
 
 from Microcontrollers import SerialBusArduino, SerialMessage
 from Microcontrollers.Bus import BusConfig
-from Microcontrollers.BusReaderWriter import BusReaderWriterConfig, ArduinoSerialBusReaderWriter
+from Busses.BusReaderWriter import BusReaderWriterConfig, ArduinoSerialBusReaderWriter
 
 
 class MyTestCase(unittest.TestCase):

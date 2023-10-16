@@ -4,7 +4,7 @@ import serial
 
 from Microcontrollers import SerialBusArduino, BusReaderWriter, SerialMessage, Message
 from Microcontrollers.Bus import BusConfig, Bus
-from Microcontrollers.BusReaderWriter import BusReaderWriterConfig
+from Busses.BusReaderWriter import BusReaderWriterConfig
 from Microcontrollers.InterfaceTransceiver import InterfaceTransceiver, TransceiverConfig
 
 

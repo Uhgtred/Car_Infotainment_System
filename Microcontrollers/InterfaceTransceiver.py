@@ -7,7 +7,7 @@ from typing import NamedTuple
 from Events import EventUser
 from .Bus import Bus
 from .Message import Message
-from .BusReaderWriter import BusReaderWriter
+from Busses.BusReaderWriter import BusReaderWriter
 
 
 class TransceiverConfig(NamedTuple):
