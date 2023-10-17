@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # @author      Markus Kösters
 
-import Event
-import EventUser
+from .Event import Event
+from .EventUser import EventUser
 
 
-class ProduceEventUser(EventUser.EventUser):
+class ProduceEventUser(EventUser):
 
     def __init__(self):
         """
         Setting up an event-user.
         """
-        self.__event = Event.Event()
+        self.__event = Event()
 
     def subscribeToEvent(self, eventCallbackMethod: callable) -> None:
         """
@@ -26,9 +26,3 @@ class ProduceEventUser(EventUser.EventUser):
         Method for posting updates to an event.
         """
         self.__event.notifySubscribers(data)
-
-
-if __name__ == '__main__':
-    eventUser = ProduceEventUser()
-    eventUser.subscribeToEvent(print)
-    eventUser.postEventUpdate('Test')
