@@ -1,6 +1,6 @@
 import unittest
 
-from Microcontrollers import SerialMessage
+from BusTransactions import SerialMessage
 
 
 class MyTestCase(unittest.TestCase):

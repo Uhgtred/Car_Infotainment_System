@@ -5,7 +5,7 @@ import time
 from typing import TypedDict, Type
 
 from Events import EventFactory
-from Microcontrollers.InterfaceTransceiver import Transceiver
+from BusTransactions.InterfaceTransceiver import Transceiver
 
 
 class EventDictionary(TypedDict):

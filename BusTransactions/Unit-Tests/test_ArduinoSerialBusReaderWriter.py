@@ -3,8 +3,8 @@ import unittest
 
 import serial
 
-from Microcontrollers import SerialBusArduino, SerialMessage
-from Microcontrollers.Bus import BusConfig
+from BusTransactions import SerialBusArduino, SerialMessage
+from BusTransactions.Bus import BusConfig
 from Busses.BusReaderWriter import BusReaderWriterConfig, ArduinoSerialBusReaderWriter
 
 

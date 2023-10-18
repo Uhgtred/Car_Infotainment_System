@@ -1,7 +1,7 @@
 import unittest
 import serial
 
-from Microcontrollers.Bus import SerialBusArduino, BusConfig
+from BusTransactions.Bus import SerialBusArduino, BusConfig
 
 
 class MyTestCase(unittest.TestCase):

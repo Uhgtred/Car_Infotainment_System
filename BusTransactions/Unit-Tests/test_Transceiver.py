@@ -2,10 +2,10 @@ import unittest
 
 import serial
 
-from Microcontrollers import SerialMessage
-from Microcontrollers.Bus import BusConfig, SerialBusArduino
+from BusTransactions import SerialMessage
+from BusTransactions.Bus import BusConfig, SerialBusArduino
 from Busses.BusReaderWriter import BusReaderWriterConfig, BusReaderWriter
-from Microcontrollers.InterfaceTransceiver import Transceiver, TransceiverConfig
+from BusTransactions.InterfaceTransceiver import Transceiver, TransceiverConfig
 
 
 class MyTestCase(unittest.TestCase):

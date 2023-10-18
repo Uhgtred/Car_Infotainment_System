@@ -5,6 +5,8 @@ import atexit
 from abc import ABC, abstractmethod
 import serial
 
+from BusTransactions.Busses.SerialBus.SerialBusConfig import SerialBusConfig
+
 
 class SerialBusInterface(ABC):
 
@@ -30,9 +32,9 @@ class SerialBus(SerialBusInterface):
     Class for handling a serial-connection to an Arduino. And reading/writing messages to it.
     """
 
-    def __init__(self, port: str, baudRate: int):
-        self.__port = port
-        self.__baudRate = baudRate
+    def __init__(self, config: SerialBusConfig):
+        self.__port = config.port
+        self.__baudRate = config.baudRate
         self.bus: serial.Serial = self.__setupBus()
         # Making sure bus is closed when instance dies.
         atexit.register(self.bus.close)
