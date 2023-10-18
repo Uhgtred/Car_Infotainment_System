@@ -1,4 +1,4 @@
 #!/usr/bin/env python3
 # @author: Markus Kösters
 
-from .Bus import SerialBusArduino
+from .Bus import BusCommunicator
