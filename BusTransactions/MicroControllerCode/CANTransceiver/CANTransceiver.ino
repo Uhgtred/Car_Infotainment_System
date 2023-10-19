@@ -1,6 +1,3 @@
-// Copyright (c) Sandeep Mistry. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-
 #include <CAN.h> // default clock-frequency needs to be set to 8k
 
 const int maxCAN_MessageLength = 64;
