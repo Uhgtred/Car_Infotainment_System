@@ -3,6 +3,8 @@
 
 from typing import Protocol
 
+from BusTransactions.BusEncodings import Encoding
+
 
 class Bus(Protocol):
     """
@@ -19,28 +21,6 @@ class Bus(Protocol):
         """
         Method for writing to a bus.
         :param message: Message that shall be sent to the bus.
-        """
-        pass
-
-
-class Encoding(Protocol):
-    """
-    Protocol for prescribing the structure of the encoding.
-    """
-
-    @staticmethod
-    def decode(message: any) -> any:
-        """
-        Method for decoding a message received from a bus.
-        :param message: Message from bus that needs to be decoded.
-        """
-        pass
-
-    @staticmethod
-    def encode(message: any) -> any:
-        """
-        Method for encoding a message that will be sent to a bus.
-        :param message: Message that needs to be encoded.
         """
         pass
 

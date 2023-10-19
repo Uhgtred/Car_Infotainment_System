@@ -3,7 +3,8 @@
 
 from dataclasses import dataclass
 
-from BusTransactions.BusTransceiver import Bus, Encoding, BusTransceiver
+from BusTransactions.BusEncodings import Encoding
+from BusTransactions.BusTransceiver import Bus, BusTransceiver
 
 
 class BusFactory:
