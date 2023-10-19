@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 # @author Markus Kösters
+
 import threading
-import time
 from typing import TypedDict, Type
 
+from BusTransactions import BusFactory
+from BusTransactions.BusEncodings import ArduinoSerialEncoding
+from BusTransactions.Busses import SerialBus
+from BusTransactions.Busses.SerialBus.SerialBusConfig import SerialBusConfig
 from Events import EventFactory
-from BusTransactions.InterfaceTransceiver import Transceiver
 
 
 class EventDictionary(TypedDict):
@@ -18,8 +21,10 @@ class Main:
     """
     Main-program. Starts and organizes any submodules
     """
-    # TODO: put this list into a confi-file with json-format.
-    __events: list[[callable]] = [[Transceiver().sendMessage]]
+    # :TODO: put this list into a config-file with json-format.
+    serialBusSetup = [SerialBus, SerialBusConfig, ArduinoSerialEncoding]
+    # :END TODO:
+    __events: list[[callable]] = [[serialBusSetup]]
 
     def __init__(self):
         self.threads = Threads()
@@ -31,12 +36,13 @@ class Main:
         for eventUserList in self.__events:
             eventObject = EventFactory.ProduceEventUser()
             for eventUser in eventUserList:
-                eventObject.subscribeToEvent(eventUser)
+                transceiver = BusFactory().produceBusTransceiver(*eventUser)
+                eventObject.subscribeToEvent(transceiver.sendSingleMessage)
+
 
 class Threads:
     """
     Method for organizing threads and keeping track of opened tracks.
-    TODO: implement a method that closes any running threads on program-exit
     """
 
     __threads: dict = {}

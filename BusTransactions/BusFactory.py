@@ -22,5 +22,3 @@ class BusFactory:
         bus = bus(config)
         transceiver = BusTransceiver(bus, encoding)
         return transceiver
-
-

@@ -28,14 +28,16 @@ class Encoding(Protocol):
     Protocol for prescribing the structure of the encoding.
     """
 
-    def decode(self, message: any) -> any:
+    @staticmethod
+    def decode(message: any) -> any:
         """
         Method for decoding a message received from a bus.
         :param message: Message from bus that needs to be decoded.
         """
         pass
 
-    def encode(self, message: any) -> any:
+    @staticmethod
+    def encode(message: any) -> any:
         """
         Method for encoding a message that will be sent to a bus.
         :param message: Message that needs to be encoded.
