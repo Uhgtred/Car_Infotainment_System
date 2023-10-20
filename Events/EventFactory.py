@@ -5,7 +5,20 @@ from .Event import Event
 from .EventUser import EventUser
 
 
+class EventFactory:
+    """
+    Factory-class for EventUser.
+    """
+
+    @staticmethod
+    def produceEventUser():
+        return ProduceEventUser()
+
+
 class ProduceEventUser(EventUser):
+    """
+    Helper-class for the EventFactory to produce an Eventuser.
+    """
 
     def __init__(self):
         """

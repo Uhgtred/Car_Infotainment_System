@@ -5,7 +5,7 @@ import threading
 from typing import TypedDict, Type
 
 from BusTransactions import BusFactory
-from BusTransactions.BusEncodings import ArduinoSerialEncoding
+from BusTransactions.BusEncodings import EncodingContainer
 from BusTransactions.Busses import SerialBus
 from BusTransactions.Busses.SerialBus.SerialBusConfig import SerialBusConfig
 from Events import EventFactory
@@ -22,7 +22,7 @@ class Main:
     Main-program. Starts and organizes any submodules
     """
     # :TODO: put this list into a config-file with json-format.
-    serialBusSetup = [SerialBus, SerialBusConfig, ArduinoSerialEncoding]
+    serialBusSetup = [SerialBus, SerialBusConfig, EncodingContainer.arduinoSerialEncoding]
     # :END TODO:
     __events: list[[callable]] = [[serialBusSetup]]
 
@@ -34,9 +34,9 @@ class Main:
         Method for starting all events listed in the dictionary.
         """
         for eventUserList in self.__events:
-            eventObject = EventFactory.ProduceEventUser()
+            eventObject = EventFactory.EventFactory.produceEventUser()
             for eventUser in eventUserList:
-                transceiver = BusFactory().produceBusTransceiver(*eventUser)
+                transceiver = BusFactory.produceBusTransceiver(*eventUser)
                 eventObject.subscribeToEvent(transceiver.sendSingleMessage)
 
 

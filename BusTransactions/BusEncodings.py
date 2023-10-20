@@ -4,6 +4,16 @@
 from typing import Protocol
 
 
+class EncodingContainer:
+    """
+    Container to make all Encodings available through one object.
+    """
+
+    @staticmethod
+    def arduinoSerialEncoding():
+        return ArduinoSerialEncoding()
+
+
 class Encoding(Protocol):
     """
     Protocol for prescribing the structure of the encoding.
