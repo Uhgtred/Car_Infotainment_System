@@ -33,6 +33,7 @@ class SerialBus(SerialBusInterface):
     """
 
     def __init__(self, config: SerialBusConfig):
+        self.bus = config.bus
         self.__port = config.port
         self.__baudRate = config.baudRate
         self.bus: serial.Serial = self.__setupBus()
@@ -57,10 +58,9 @@ class SerialBus(SerialBusInterface):
         """
         Initializing the microcontrollers bus-settings.
         """
-        bus = serial.Serial()
+        bus = self.bus
         bus.baudrate = self.__baudRate
         bus.port = self.__port
         if not bus.isOpen():
             bus.open()
         return bus
-
