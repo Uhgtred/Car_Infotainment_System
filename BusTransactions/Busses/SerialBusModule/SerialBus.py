@@ -5,7 +5,7 @@ import atexit
 from abc import ABC, abstractmethod
 import serial
 
-from BusTransactions.Busses.SerialBus.SerialBusConfig import SerialBusConfig
+from BusTransactions.Busses.SerialBusModule.SerialBusConfig import SerialBusConfig
 
 
 class SerialBusInterface(ABC):
@@ -33,7 +33,7 @@ class SerialBus(SerialBusInterface):
     """
 
     def __init__(self, config: SerialBusConfig):
-        self.bus = config.bus
+        self.bus = config.bus()
         self.__port = config.port
         self.__baudRate = config.baudRate
         self.bus: serial.Serial = self.__setupBus()

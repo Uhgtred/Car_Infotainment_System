@@ -2,3 +2,4 @@
 # @author Markus Kösters
 
 from .SerialBus import SerialBus, SerialBusInterface
+from .SerialBusConfig import SerialBusConfig

@@ -3,7 +3,7 @@
 
 from typing import Protocol
 
-from BusTransactions.BusEncodings import Encoding
+from BusTransactions.Encoding import Encoding
 
 
 class Bus(Protocol):
@@ -39,7 +39,7 @@ class BusTransceiver:
         self.encoding = encoding
         self.bus = bus
 
-    def readSingleMessage(self) -> Encoding.decode:
+    def readSingleMessage(self) -> Encoding:
         """
         Read and decode a single message from the bus.
         :return: Decoded message.

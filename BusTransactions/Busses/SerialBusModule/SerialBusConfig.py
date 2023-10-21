@@ -5,10 +5,11 @@ from dataclasses import dataclass
 import serial
 
 
-class SerialBusConfig(dataclass):
+@dataclass
+class SerialBusConfig:
     """
     Config-dataclass for Serial-busses.
     """
-    bus: serial.Serial()
+    bus: serial.Serial
     port: str
     baudRate: int

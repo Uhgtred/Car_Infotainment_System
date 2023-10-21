@@ -4,7 +4,7 @@
 from typing import Protocol
 
 
-class Encoding(Protocol):
+class EncodingProtocol(Protocol):
     """
     Protocol for prescribing the structure of the encoding.
     """
