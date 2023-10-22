@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 # @author Markus Kösters
+
 import threading
-import time
 from typing import TypedDict, Type
 
-from Events.EventFactory import EventFactory
-from Microcontrollers.InterfaceTransceiver import Transceiver
+from BusTransactions import BusFactory
+from BusTransactions.Buses import SerialBus
+from BusTransactions.Buses.SerialBusModule.SerialBusConfig import SerialBusConfig
+from BusTransactions.Encoding import EncodingContainer
+from Events import EventFactory
 
 
 class EventDictionary(TypedDict):
@@ -18,28 +21,28 @@ class Main:
     """
     Main-program. Starts and organizes any submodules
     """
-    # TODO: put this list into a confi-file with json-format.
-    __events: list[EventDictionary] = [{'module': Transceiver, 'name': 'can_transceiver', 'subscribeTo': ''}]
+    # :TODO: put this list into a config-file with json-format.
+    serialBusSetup = [SerialBusConfig, EncodingContainer.arduinoSerialEncoding, SerialBus]
+    # :END TODO:
+    __events: list[[callable]] = [[serialBusSetup]]
 
     def __init__(self):
         self.threads = Threads()
-        self.eventFactory = EventFactory()
 
     def connectEvents(self) -> None:
         """
         Method for starting all events listed in the dictionary.
         """
-        for eventDictionary in self.__events:
-            eventObject = eventDictionary.get('module')
-            name = eventDictionary.get('name')
-            subscribeTo = eventDictionary.get('subscribeTo')
-            self.threads.startMethodInThread(self.eventFactory.setupEvent, name, [eventObject, name, subscribeTo])
+        for eventUserList in self.__events:
+            eventObject = EventFactory.EventFactory.produceEventUser()
+            for eventUser in eventUserList:
+                transceiver = BusFactory.produceBusTransceiver(*eventUser)
+                eventObject.subscribeToEvent(transceiver.writeSingleMessage)
 
 
 class Threads:
     """
     Method for organizing threads and keeping track of opened tracks.
-    TODO: implement a method that closes any running threads on program-exit
     """
 
     __threads: dict = {}

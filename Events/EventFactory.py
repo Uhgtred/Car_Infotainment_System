@@ -1,56 +1,41 @@
 #!/usr/bin/env python3
 # @author      Markus Kösters
 
-from dataclasses import dataclass
-
-from .EventManager import EventManager
 from .Event import Event
-
-
-@dataclass
-class EventObjectFactory:
-    """
-    Factory for creating an object that can be handled by the Eventmanager.
-    EVENT-FACTORY IS USING THIS, NO NEED TO USE IT MANUALLY!
-    """
-    module: callable
-    name: str
-    subscribeTo: str
-
-    def createEventObject(self) -> object:
-        """
-        Method creating an object of the passed module and attaching
-        the attributes needed by event-module.
-        """
-        module = self.module()
-        module.name = self.name
-        module.subscribeTo = self.subscribeTo
-        return module
+from .EventUser import EventUser
 
 
 class EventFactory:
+    """
+    Factory-class for EventUser.
+    """
+
+    @staticmethod
+    def produceEventUser():
+        return ProduceEventUser()
+
+
+class ProduceEventUser(EventUser):
+    """
+    Helper-class for the EventFactory to produce an Eventuser.
+    """
 
     def __init__(self):
-        self.manager = EventManager()
+        """
+        Setting up an event-user.
+        """
+        self.__event = Event()
 
-    def setupEvent(self, module: Event, name: str, subscribeTo: str) -> None:
+    def subscribeToEvent(self, eventCallbackMethod: callable) -> None:
         """
-        Method for configuring the concrete Event.
-        :param module: reference of the class that shall be instanced and used as an event.
-        :param name: naming for the event, that is being used to subscribe other events to.
-        :param subscribeTo: string representing the event that this module shall be subscribed to.
+        Method for subscribing to event-instance.
+        :param eventCallbackMethod: Method that shall be informed about event-updates.
+                                    Has to receive one parameter, containing the message of the event-update.
         """
-        factory = EventObjectFactory(module, name, subscribeTo)
-        instanceObject = factory.createEventObject()
-        # enabling Event to send an update to the event-manager
-        self.__configurePostEventUpdate(instanceObject)
-        # enabling Event to receive an update FROM event-manager
-        self.manager.subscribeToEvent(instanceObject, subscribeTo)
+        self.__event.subscribe(eventCallbackMethod)
 
-    def __configurePostEventUpdate(self, instanceObject: callable) -> None:
+    def postEventUpdate(self, data: any) -> None:
         """
-        Method for constantly posting updates to the subscribers.
-        :param instanceObject: instance-object of the event that is being setup
+        Method for posting updates to an event.
         """
-        callbackMethod = self.manager.postEventUpdate
-        instanceObject.receiveMessage(callbackMethod, loop=True)
+        self.__event.notifySubscribers(data)

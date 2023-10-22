@@ -1,25 +1,27 @@
 #!/usr/bin/env python3
 # @author: Markus Kösters
 
-from typing import Protocol
 
-
-class Event(Protocol):
+class Event:
     """
-    Protocol to prescribe the structure of an Event.
+    Class that represents an event which can be subscribed to and posted to.
     """
 
-    def sendMessage(self, callbackMethod: callable, loop: bool = True) -> None:
-        """
-        Method that sends messages to a subscribed method.
-        :param callbackMethod: EventManager.postEventUpdate, sending updates to all subscribers
-        :param loop: making the method send messages in a loop.
-        """
-        ...
+    def __init__(self):
+        self.__subscribers: list = []
 
-    def receiveMessage(self, data: any) -> None:
+    def subscribe(self, callbackMethod: callable) -> None:
         """
-        Method to receive an event-update from a subscription.
-        :param data: data that shall be received by this method from EventManager.
+        Subscribing to Event, receiving any updates occurring.
+        :param callbackMethod: Method that the event-update is going to be sent to.
         """
-        ...
+        if callbackMethod not in self.__subscribers:
+            self.__subscribers.append(callbackMethod)
+
+    def notifySubscribers(self, data: any) -> None:
+        """
+        Sending an Event-update to all subscribers.
+        :param data: Message-data that shall be sent to subscribers.
+        """
+        for callbackMethod in self.__subscribers:
+            callbackMethod(data)

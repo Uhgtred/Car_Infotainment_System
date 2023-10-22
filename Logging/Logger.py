@@ -5,8 +5,6 @@ import logging
 
 from Logging.LoggingInterface import LoggingInterface
 
-x='test'
-
 class Logger(LoggingInterface):
     """
     Class for making easy access to logging from any module.
