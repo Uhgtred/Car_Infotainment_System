@@ -13,10 +13,11 @@ class BusFactory:
     """
 
     @staticmethod
-    def produceBusTransceiver(bus: type(Bus), config: dataclass, encoding: Encoding):
+    def produceBusTransceiver(config: dataclass, encoding: Encoding, bus: type(Bus)):
         """
         Method for producing an instance of a bus-transceiver.
-        :param bus: Bus that will be communicated with.
+        :param bus: Bus-Class that will be communicated with
+                    (NOT bus-library e.g. serial.Serial but e.g. BusTransactions.Busses.SerialBusModule.SerialBus).
         :param config: Configuration that sets the parameters of the bus.
         :param encoding: Encoding that decides the format of the messages.
         """

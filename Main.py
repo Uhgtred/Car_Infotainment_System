@@ -22,7 +22,7 @@ class Main:
     Main-program. Starts and organizes any submodules
     """
     # :TODO: put this list into a config-file with json-format.
-    serialBusSetup = [SerialBus, SerialBusConfig, EncodingContainer.arduinoSerialEncoding]
+    serialBusSetup = [SerialBusConfig, EncodingContainer.arduinoSerialEncoding, SerialBus]
     # :END TODO:
     __events: list[[callable]] = [[serialBusSetup]]
 
@@ -37,7 +37,7 @@ class Main:
             eventObject = EventFactory.EventFactory.produceEventUser()
             for eventUser in eventUserList:
                 transceiver = BusFactory.produceBusTransceiver(*eventUser)
-                eventObject.subscribeToEvent(transceiver.sendSingleMessage)
+                eventObject.subscribeToEvent(transceiver.writeSingleMessage)
 
 
 class Threads:

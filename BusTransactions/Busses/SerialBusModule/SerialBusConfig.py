@@ -10,6 +10,6 @@ class SerialBusConfig:
     """
     Config-dataclass for Serial-busses.
     """
-    bus: serial.Serial
     port: str
     baudRate: int
+    busLibrary: serial.Serial = serial.Serial

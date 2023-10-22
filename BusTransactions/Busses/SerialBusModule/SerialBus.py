@@ -33,7 +33,11 @@ class SerialBus(SerialBusInterface):
     """
 
     def __init__(self, config: SerialBusConfig):
-        self.bus = config.bus()
+        # check if the busLibrary-object has already been instanced
+        if callable(config.busLibrary):
+            self.bus = config.busLibrary()
+        else:
+            self.bus = config.busLibrary
         self.__port = config.port
         self.__baudRate = config.baudRate
         self.bus: serial.Serial = self.__setupBus()

@@ -33,7 +33,7 @@ class MockBus:
 
 class MyTestCase(unittest.TestCase):
     print(MockBus)
-    config = SerialBusConfig(MockBus, 'test', 123)
+    config = SerialBusConfig('test', 123, MockBus)
     print(config)
     bus = SerialBus(config)
 

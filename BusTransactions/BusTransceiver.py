@@ -59,7 +59,7 @@ class BusTransceiver:
             message = self.bus.readBus()
             callbackMethod(self.encoding.decode(message))
 
-    def sendSingleMessage(self, message: any) -> None:
+    def writeSingleMessage(self, message: any) -> None:
         """
         Sending encoded message to the bus.
         :param message: Message that will be sent to the bus.
