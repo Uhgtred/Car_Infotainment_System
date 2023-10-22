@@ -3,7 +3,7 @@
 
 import unittest
 
-from BusTransactions.Busses.SerialBusModule import SerialBusConfig, SerialBus
+from BusTransactions.Buses.SerialBusModule import SerialBusConfig, SerialBus
 
 
 class MockBus:
@@ -32,9 +32,9 @@ class MockBus:
 
 
 class MyTestCase(unittest.TestCase):
-    print(MockBus)
+    # print(MockBus)
     config = SerialBusConfig('test', 123, MockBus)
-    print(config)
+    # print(config)
     bus = SerialBus(config)
 
     def test_write(self):

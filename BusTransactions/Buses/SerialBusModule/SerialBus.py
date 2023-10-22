@@ -5,7 +5,7 @@ import atexit
 from abc import ABC, abstractmethod
 import serial
 
-from BusTransactions.Busses.SerialBusModule.SerialBusConfig import SerialBusConfig
+from BusTransactions.Buses.SerialBusModule.SerialBusConfig import SerialBusConfig
 
 
 class SerialBusInterface(ABC):

@@ -5,8 +5,8 @@ import threading
 from typing import TypedDict, Type
 
 from BusTransactions import BusFactory
-from BusTransactions.Busses import SerialBus
-from BusTransactions.Busses.SerialBusModule.SerialBusConfig import SerialBusConfig
+from BusTransactions.Buses import SerialBus
+from BusTransactions.Buses.SerialBusModule.SerialBusConfig import SerialBusConfig
 from BusTransactions.Encoding import EncodingContainer
 from Events import EventFactory
 
