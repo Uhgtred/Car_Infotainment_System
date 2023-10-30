@@ -4,7 +4,7 @@
 from .BusEncodings import ArduinoSerialEncoding
 
 
-class EncodingContainer:
+class EncodingInterface:
     """
     Container to make all Encodings available through one object.
     """

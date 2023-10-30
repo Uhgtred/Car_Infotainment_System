@@ -41,7 +41,7 @@ class SerialBus(SerialBusInterface):
         self.__port = config.port
         self.__baudRate = config.baudRate
         self.bus: serial.Serial = self.__setupBus()
-        # Making sure bus is closed when instance dies.
+        # Making sure the bus is closed when instance dies.
         atexit.register(self.bus.close)
 
     def readBus(self) -> bytes:
@@ -60,7 +60,7 @@ class SerialBus(SerialBusInterface):
 
     def __setupBus(self) -> serial.Serial:
         """
-        Initializing the microcontrollers bus-settings.
+        Initializing the microcontroller bus-settings.
         """
         bus = self.bus
         bus.baudrate = self.__baudRate

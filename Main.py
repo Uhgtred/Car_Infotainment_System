@@ -7,7 +7,7 @@ from typing import TypedDict, Type
 from BusTransactions import BusFactory
 from BusTransactions.Buses import SerialBus
 from BusTransactions.Buses.SerialBusModule.SerialBusConfig import SerialBusConfig
-from BusTransactions.Encoding import EncodingContainer
+from BusTransactions.Encoding import EncodingInterface
 from Events import EventFactory
 
 
@@ -22,7 +22,7 @@ class Main:
     Main-program. Starts and organizes any submodules
     """
     # :TODO: put this list into a config-file with json-format.
-    serialBusSetup = [SerialBusConfig, EncodingContainer.arduinoSerialEncoding, SerialBus]
+    serialBusSetup = [SerialBusConfig, EncodingInterface.arduinoSerialEncoding, SerialBus]
     # :END TODO:
     __events: list[[callable]] = [[serialBusSetup]]
 

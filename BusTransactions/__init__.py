@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # @author      Markus Kösters
 
-from .BusTransceiver import BusTransceiver
+from .BusInterface import BusInterface
 from .BusFactory import BusFactory
-from .Encoding import EncodingContainer
+from .Encoding import EncodingInterface
 from .Buses import SerialBusConfig, SerialBus

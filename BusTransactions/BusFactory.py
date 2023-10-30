@@ -4,7 +4,7 @@
 from dataclasses import dataclass
 
 from .Buses import SerialBusConfig, SerialBus
-from .BusTransceiver import Bus, BusTransceiver
+from .BusInterface import Bus, BusInterface
 from BusTransactions.Encoding import Encoding
 
 
@@ -18,7 +18,7 @@ class BusFactory:
         """
         Method for producing an instance of a bus-transceiver.
         :param busModule: Bus-Class that will be communicated with
-                        (NOT bus-library e.g. serial.Serial but e.g. BusTransactions.Buses.SerialBusModule.SerialBus).
+                        (NOT bus-library e.g. serial.Serial but e.g., BusTransactions.Buses.SerialBusModule.SerialBus).
         :param config: Configuration that sets the parameters of the bus.
         :param encoding: Encoding that decides the format of the messages.
         """
@@ -26,7 +26,7 @@ class BusFactory:
         # check if encoding has already been instanced
         if callable(encoding):
             encoding = encoding()
-        transceiver = BusTransceiver(busModule, encoding)
+        transceiver = BusInterface(busModule, encoding)
         return transceiver
 
     @staticmethod
@@ -40,4 +40,4 @@ class BusFactory:
         # check if encoding has already been instanced
         if callable(encoding):
             encoding = encoding()
-        return BusTransceiver(busModule, encoding)
+        return BusInterface(busModule, encoding)

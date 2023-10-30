@@ -1,4 +1,4 @@
 #!/usr/bin/env python3
 # @author Markus Kösters
 
-from .Encoding import EncodingContainer
+from .Encoding import EncodingInterface

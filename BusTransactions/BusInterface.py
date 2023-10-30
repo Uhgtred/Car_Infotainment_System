@@ -25,7 +25,7 @@ class Bus(Protocol):
         pass
 
 
-class BusTransceiver:
+class BusInterface:
     """
     Class for communication with a variety of bus-systems.
     """
@@ -61,7 +61,7 @@ class BusTransceiver:
 
     def writeSingleMessage(self, message: any) -> None:
         """
-        Sending encoded message to the bus.
+        Sending an encoded message to the bus.
         :param message: Message that will be sent to the bus.
         """
         encodedMessage = self.encoding.encode(message)

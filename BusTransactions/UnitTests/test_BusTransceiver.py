@@ -12,7 +12,7 @@ class MyTestCase(unittest.TestCase):
 
     transceiver = BusFactory()
     config = SerialBusConfig('test', 123, MockBus)
-    transceiver = transceiver.produceBusTransceiver(config, Encoding.EncodingContainer.arduinoSerialEncoding, SerialBus)
+    transceiver = transceiver.produceBusTransceiver(config, Encoding.EncodingInterface.arduinoSerialEncoding, SerialBus)
     testString = 'Test from BusTransceiver'
 
     def test_BusTransceiver_writeSingleMessage(self):
