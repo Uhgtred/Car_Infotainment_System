@@ -17,7 +17,7 @@ class Bus(Protocol):
         """
         pass
 
-    def writeBus(self, message: any):
+    def writeBus(self, message: any) -> None:
         """
         Method for writing to a bus.
         :param message: Message that shall be sent to the bus.
