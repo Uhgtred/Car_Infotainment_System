@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 # @author: Markus Kösters
 
-from dataclasses import dataclass
-
-from .Buses import SerialBusConfig, SerialBus
-from .BusInterface import Bus, BusInterface
+import Buses
+from . import EncodingInterface
+from .BusInterface import BusInterface
 from BusTransactions.Encoding import Encoding
 
 
@@ -14,29 +13,26 @@ class BusFactory:
     """
 
     @staticmethod
-    def produceBusTransceiver(config: dataclass, encoding: Encoding, busModule: type(Bus)):
+    def produceBusTransceiver(bus: Buses.Factory, encoding: Encoding) -> BusInterface:
         """
         Method for producing an instance of a bus-transceiver.
-        :param busModule: Bus-Class that will be communicated with
-                        (NOT bus-library e.g. serial.Serial but e.g., BusTransactions.Buses.SerialBusModule.SerialBus).
-        :param config: Configuration that sets the parameters of the bus.
+        :param bus: Bus-Class that will be communicated with, produced by Factory-class in Buses-Module.
         :param encoding: Encoding that decides the format of the messages.
         """
-        busModule = busModule(config)
+        bus = bus()
         # check if encoding has already been instanced
         if callable(encoding):
             encoding = encoding()
-        transceiver = BusInterface(busModule, encoding)
+        transceiver = BusInterface(bus, encoding)
         return transceiver
 
     @staticmethod
-    def produceSerialTransceiver(config: SerialBusConfig, encoding: Encoding):
+    def produceSerialTransceiver() -> BusInterface:
         """
-        Method for creating an instance of a serial-bus transceiver.
-        :param config: Configuration that sets the parameters of the bus.
-        :param encoding: Encoding that decides the format of the messages.
+        Method for creating an instance of a serial-bus transceiver that connects to arduino.
         """
-        busModule = SerialBus(config)
+        encoding = EncodingInterface.arduinoSerialEncoding
+        busModule = Buses.Factory.produceSerialBusArduino()
         # check if encoding has already been instanced
         if callable(encoding):
             encoding = encoding()

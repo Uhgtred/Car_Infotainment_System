@@ -21,10 +21,6 @@ class Main:
     """
     Main-program. Starts and organizes any submodules
     """
-    # :TODO: put this list into a config-file with json-format.
-    serialBusSetup = [SerialBusConfig, EncodingInterface.arduinoSerialEncoding]
-    # :END TODO:
-    __factoryConfigs: dict[[callable]] = {'serialBusArduino': [serialBusSetup]}
     __eventObjects: dict[str, object] = {}
 
     def __init__(self):
@@ -35,7 +31,7 @@ class Main:
         Method for starting all events listed in the dictionary.
         """
         eventObject = EventFactory.EventFactory.produceEventUser()
-        serialBusTransceiver = BusFactory.produceSerialTransceiver(*self.__factoryConfigs.get('serialBusArduino'))
+        serialBusTransceiver = BusFactory.produceSerialTransceiver()
         eventObject.subscribeToEvent(serialBusTransceiver.writeSingleMessage)
         self.__eventObjects['serialBusTransmitterArduino'] = eventObject
 

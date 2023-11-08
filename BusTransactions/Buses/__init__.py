@@ -2,3 +2,4 @@
 # @author: Markus Kösters
 
 from .SerialBusModule import SerialBus, SerialBusConfig
+from .Factory import  Factory
