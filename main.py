@@ -5,10 +5,7 @@ import threading
 from typing import TypedDict, Type
 
 from BusTransactions import BusFactory
-from BusTransactions.Buses import SerialBus
-from BusTransactions.Buses.SerialBusModule.SerialBusConfig import SerialBusConfig
-from BusTransactions.Encoding import EncodingInterface
-from Events import EventFactory
+from Events.EventInterface import EventInterface
 
 
 class EventDictionary(TypedDict):
@@ -21,19 +18,17 @@ class Main:
     """
     Main-program. Starts and organizes any submodules
     """
-    __eventObjects: dict[str, object] = {}
 
     def __init__(self):
         self.threads = Threads()
 
-    def connectEvents(self) -> None:
+    @staticmethod
+    def connectEvents() -> None:
         """
         Method for starting all events listed in the dictionary.
         """
-        eventObject = EventFactory.EventFactory.produceEventUser()
         serialBusTransceiver = BusFactory.produceSerialTransceiver()
-        eventObject.subscribeToEvent(serialBusTransceiver.writeSingleMessage)
-        self.__eventObjects['serialBusTransmitterArduino'] = eventObject
+        EventInterface.subscribeToEvent(eventName='SerialBusEvent', callbackMethod=serialBusTransceiver.writeSingleMessage)
 
 
 class Threads:
