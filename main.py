@@ -2,16 +2,9 @@
 # @author Markus Kösters
 
 import threading
-from typing import TypedDict, Type
 
 from BusTransactions import BusFactory
 from Events.EventInterface import EventInterface
-
-
-class EventDictionary(TypedDict):
-    module: Type[any]
-    name: str
-    subscribeTo: str
 
 
 class Main:

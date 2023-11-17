@@ -2,32 +2,13 @@
 # @author      Markus Kösters
 
 import atexit
-from abc import ABC, abstractmethod
 import serial
 
 from .SerialBusConfig import SerialBusConfig
+from BusTransactions import Bus
 
 
-class SerialBusInterface(ABC):
-
-    @abstractmethod
-    def readBus(self) -> bytes:
-        """
-        Interface-method for reading from a bus.
-        :return: Bytes containing the message.
-        """
-        pass
-
-    @abstractmethod
-    def writeBus(self, message: bytes) -> None:
-        """
-        Interface-method for writing to a bus.
-        :param message: Message that shall be sent to the bus.
-        """
-        pass
-
-
-class SerialBus(SerialBusInterface):
+class SerialBus(Bus):
     """
     Class for handling a serial-connection to an Arduino. And reading/writing messages to it.
     """
