@@ -8,15 +8,14 @@ class Event:
     """
 
     def __init__(self):
-        self.__subscribers: list = []
+        self.__subscribers: set = set()
 
     def subscribe(self, callbackMethod: callable) -> None:
         """
         Subscribing to Event, receiving any updates occurring.
         :param callbackMethod: Method that the event-update is going to be sent to.
         """
-        if callbackMethod not in self.__subscribers:
-            self.__subscribers.append(callbackMethod)
+        self.__subscribers.add(callbackMethod)
 
     def notifySubscribers(self, data: any) -> None:
         """
