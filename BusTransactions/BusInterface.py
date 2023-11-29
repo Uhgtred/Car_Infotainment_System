@@ -53,11 +53,12 @@ class BusInterface:
         :param callbackMethod: Method that the received messages shall be sent to.
                                 Needs to accept one argument which is the message read from the bus.
         :param stopFlag: When true reading-loop stops.
+        :TODO: check if this can be done asynchronously
         """
-        self.stopFlag = stopFlag
-        while not self.stopFlag:
+        if not stopFlag:
             message = self.bus.readBus()
             callbackMethod(self.encoding.decode(message))
+            self.readBusInLoop(callbackMethod, self.stopFlag)
 
     def writeSingleMessage(self, message: any) -> None:
         """
