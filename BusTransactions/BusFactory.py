@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # @author: Markus Kösters
 
-import Buses
-from . import EncodingInterface
+from . import EncodingInterface, Buses
 from .BusInterface import BusInterface
 from BusTransactions.Encoding import Encoding
 
