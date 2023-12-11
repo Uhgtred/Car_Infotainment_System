@@ -35,7 +35,7 @@ class MyTestCase(unittest.TestCase):
     # print(MockBus)
     config = SerialBusConfig('test', 123, MockBus)
     # print(config)
-    bus = SerialBus.SerialBus(config)
+    bus = SerialBus(config)
 
     def test_write(self):
         testString = b'Hello World'
