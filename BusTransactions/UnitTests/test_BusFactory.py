@@ -3,7 +3,7 @@
 
 import unittest
 
-from BusTransactions import BusFactory, BusInterface
+from BusTransactions import BusInterfaceFactory, BusInterface
 from BusTransactions import SerialBusConfig
 from BusTransactions import SerialBus
 from BusTransactions.Buses.SerialBusModule.UnitTests.test_SerialBus import MockBus
@@ -12,7 +12,7 @@ from BusTransactions import Encoding
 
 class MyTestCase(unittest.TestCase):
 
-    busFactory = BusFactory()
+    busFactory = BusInterfaceFactory()
     bus = SerialBus
     mockLibrary = MockBus
 

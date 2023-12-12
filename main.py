@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # @author Markus Kösters
 
-from BusTransactions import BusFactory
+from BusTransactions import BusInterfaceFactory
 from Events.EventInterface import EventInterface
 
 
@@ -15,7 +15,7 @@ class Main:
         """
         Method for starting all events listed in the dictionary.
         """
-        serialBusTransceiver = BusFactory.produceSerialTransceiver()
+        serialBusTransceiver = BusInterfaceFactory.produceSerialTransceiver()
         EventInterface.subscribeToEvent(eventName='SerialBusEvent', callbackMethod=serialBusTransceiver.writeSingleMessage)
 
 

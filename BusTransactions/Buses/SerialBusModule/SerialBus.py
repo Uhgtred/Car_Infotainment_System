@@ -5,7 +5,7 @@ import atexit
 import serial
 
 from .SerialBusConfig import SerialBusConfig
-from BusTransactions import Bus
+from BusTransactions.Bus import Bus
 
 
 class SerialBus(Bus):
@@ -21,7 +21,7 @@ class SerialBus(Bus):
             self.bus = config.busLibrary
         self.__port = config.port
         self.__baudRate = config.baudRate
-        self.bus: serial.Serial = self.__setupBus()
+        self.bus: serial.Serial = self._setupBus()
         # Making sure the bus is closed when instance dies.
         atexit.register(self.bus.close)
 
@@ -39,7 +39,7 @@ class SerialBus(Bus):
         """
         self.bus.write(message)
 
-    def __setupBus(self) -> serial.Serial:
+    def _setupBus(self) -> object:
         """
         Initializing the microcontroller bus-settings.
         """

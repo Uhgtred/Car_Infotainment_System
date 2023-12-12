@@ -3,14 +3,14 @@
 
 import unittest
 
-from BusTransactions import BusFactory, SerialBus, SerialBusConfig
+from BusTransactions import BusInterfaceFactory, SerialBus, SerialBusConfig
 from BusTransactions.Buses.SerialBusModule.UnitTests.test_SerialBus import MockBus
 from BusTransactions.Encoding import Encoding
 
 
 class MyTestCase(unittest.TestCase):
 
-    transceiver = BusFactory()
+    transceiver = BusInterfaceFactory()
     config = SerialBusConfig('test', 123, MockBus)
     transceiver = transceiver.produceBusTransceiver(config, Encoding.EncodingInterface.arduinoSerialEncoding, SerialBus)
     testString = 'Test from BusTransceiver'

@@ -1,18 +1,17 @@
 #!/usr/bin/env python3
 # @author: Markus Kösters
-
-from . import EncodingInterface, Buses
+from .Buses import BusFactory
+from .Encoding import Encoding, EncodingInterface
 from .BusInterface import BusInterface
-from BusTransactions.Encoding import Encoding
 
 
-class BusFactory:
+class BusInterfaceFactory:
     """
     Factory for creating an instance of a bus-transceiver.
     """
 
     @staticmethod
-    def produceBusTransceiver(bus: Buses.Factory, encoding: Encoding) -> BusInterface:
+    def produceBusTransceiver(bus: BusFactory, encoding: Encoding) -> BusInterface:
         """
         Method for producing an instance of a bus-transceiver.
         :param bus: Bus-Class that will be communicated with, produced by Factory-class in Buses-Module.
@@ -31,7 +30,7 @@ class BusFactory:
         Method for creating an instance of a serial-bus transceiver that connects to arduino.
         """
         encoding = EncodingInterface.arduinoSerialEncoding
-        busModule = Buses.Factory.produceSerialBusArduino()
+        busModule = BusInterfaceFactory.produceSerialBusArduino()
         # check if encoding has already been instanced
         if callable(encoding):
             encoding = encoding()

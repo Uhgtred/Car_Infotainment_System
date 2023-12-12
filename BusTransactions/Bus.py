@@ -23,9 +23,9 @@ class Bus(ABC):
         pass
 
     @abstractmethod
-    def __setupBus(self) -> object:
+    def _setupBus(self) -> object:
         """
         Method for setting up a bus-configuration.
         :return:
         """
-        ...
+        pass

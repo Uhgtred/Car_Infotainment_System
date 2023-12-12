@@ -2,6 +2,7 @@
 # @author      Markus Kösters
 
 from .BusInterface import BusInterface
-from .BusFactory import BusFactory
+from .BusInterfaceFactory import BusInterfaceFactory
 from .Encoding import EncodingInterface
 from .Buses import SerialBusConfig, SerialBus
+from .Bus import Bus

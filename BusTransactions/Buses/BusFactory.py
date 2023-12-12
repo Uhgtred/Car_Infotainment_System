@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 # @author: Markus Kösters
 
-from .SerialBusModule.SerialBus import SerialBus
-from .SerialBusModule.SerialBusConfig import SerialBusConfig
+from .SerialBusModule import SerialBus, SerialBusConfig
 
 
-class Factory:
+class BusFactory:
     """
     Class for producing Bus-instances.
     """
