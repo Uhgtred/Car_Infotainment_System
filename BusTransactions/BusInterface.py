@@ -47,7 +47,7 @@ class BusInterface:
         message = self.bus.readBus()
         return self.encoding.decode(message)
 
-    def readBusInLoop(self, callbackMethod: callable, stopFlag: bool = False) -> None:
+    def readBusUntilStopFlag(self, callbackMethod: callable, stopFlag: bool = False) -> None:
         """
         Reading messages from a bus in a loop until stopFlag is raised.
         :param callbackMethod: Method that the received messages shall be sent to.
@@ -58,7 +58,7 @@ class BusInterface:
         if not stopFlag:
             message = self.bus.readBus()
             callbackMethod(self.encoding.decode(message))
-            self.readBusInLoop(callbackMethod, self.stopFlag)
+            self.readBusUntilStopFlag(callbackMethod, self.stopFlag)
 
     def writeSingleMessage(self, message: any) -> None:
         """
