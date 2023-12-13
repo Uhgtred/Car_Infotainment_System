@@ -5,36 +5,12 @@ import unittest
 
 from BusTransactions import SerialBusConfig
 from BusTransactions import SerialBus
-
-
-class MockBus:
-    buffer = []
-    state = False
-
-    def read(self):
-        if self.buffer:
-            return self.buffer.pop(0)
-
-    def write(self, message):
-        self.buffer.append(message)
-
-    def isOpen(self):
-        return self.state
-
-    def open(self):
-        self.state = True
-
-    def close(self):
-        self.state = False
-
-    @property
-    def getBuffer(self):
-        return self.buffer
+from .SerialBusMock import MockSerialBus
 
 
 class MyTestCase(unittest.TestCase):
     # print(MockBus)
-    config = SerialBusConfig('test', 123, MockBus)
+    config = SerialBusConfig('test', 123, MockSerialBus)
     # print(config)
     bus = SerialBus(config)
 
