@@ -20,7 +20,7 @@ class Threads(Runner):
         :param args: Arguments, that shall be passed to the thread.
         """
         args = list(*args)
-        threadName = f'{str(task)}_task'
+        threadName = f'{str(task).split(" ")[1]}_thread'
         thread = threading.Thread(target=task, args=args, name=threadName)
         self.__threads[threadName] = thread
         thread.start()
