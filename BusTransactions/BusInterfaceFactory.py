@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # @author: Markus Kösters
 from .Buses import BusFactory
-from .Encoding import Encoding, EncodingInterface
+from .Encoding import EncodingInterface, EncodingInterface
 from .BusInterface import BusInterface
 
 
@@ -11,7 +11,7 @@ class BusInterfaceFactory:
     """
 
     @staticmethod
-    def produceBusTransceiver(bus: BusFactory, encoding: Encoding) -> BusInterface:
+    def produceBusTransceiver(bus: BusFactory, encoding: EncodingInterface) -> BusInterface:
         """
         Method for producing an instance of a bus-transceiver.
         :param bus: Bus-Class that will be communicated with, produced by Factory-class in Buses-Module.

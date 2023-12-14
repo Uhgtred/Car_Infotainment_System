@@ -3,7 +3,6 @@
 
 import unittest
 
-from Events import ProduceEventUser
 
 
 class MyTestCase(unittest.TestCase):
