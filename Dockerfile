@@ -6,7 +6,7 @@ ENTRYPOINT ["top", "-b"]
 # Dockerfile
 
 # Start from the Python latest image
-FROM python:latest
+FROM python:3.10
 
 # Set working directory
 WORKDIR /app
