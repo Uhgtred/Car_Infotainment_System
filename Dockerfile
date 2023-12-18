@@ -11,8 +11,9 @@ FROM python:3.10
 ENV PYTHONUNBUFFERED 1
 
 COPY ./requirements.txt /tmp/requirements.txt
+RUN mkdir /Car_Infotainment_System
 COPY ./Car_Infotainment_System /Car_Infotainment_System
-WORKDIR /app
+WORKDIR /Car_Infotainment_System
 EXPOSE 8000
 # Install dependencies
 COPY requirements.txt ./
