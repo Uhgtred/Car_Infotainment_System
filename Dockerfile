@@ -8,15 +8,23 @@ ENTRYPOINT ["top", "-b"]
 # Start from the Python latest image
 FROM python:3.10
 
-# Set working directory
+ENV PYTHONUNBUFFERED 1
+
+COPY ./requirements.txt /tmp/requirements.txt
+COPY ./app /app
 WORKDIR /app
+EXPOSE 8000
 
-# Install dependencies
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN python -m venv /py && \
+    /py/bin/pip install --upgrade pip && \
+    apk add --update --no-cache postgresql-client && \
+    apk add --update --no-cache --virtual .tmp-build-deps\
+      build-base postgresql-dev musl-dev && \
+    /py/bin/pip install -r /tmp/requirements.txt && \
+    rm -rf /tmp/ && \
+    apk del .tmp-build-deps && \
+    adduser --disabled-password --no-create-home djangouser
 
-# Copy the rest of your application's code into the container
-COPY . /app
+ENV PATH="/py/bin:$PATH"
 
-# Run command
-CMD [ "python", "-m", "unittest", "discover", "-s", "tests" ]
+USER djangouser
