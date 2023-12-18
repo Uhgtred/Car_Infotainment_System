@@ -14,4 +14,4 @@ jobs:
       run: docker build . --file Dockerfile --tag my-application
 
     - name: Run unit tests in Docker container
-      run: docker run python -m unittest *test*
+      run: docker run python -m unittest */UnitTests/*
