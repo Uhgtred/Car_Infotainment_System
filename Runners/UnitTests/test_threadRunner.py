@@ -22,7 +22,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_threadClosing(self):
         """
-        TODO: implement this test 
+        TODO: implement this test
         :return:
         """
 
