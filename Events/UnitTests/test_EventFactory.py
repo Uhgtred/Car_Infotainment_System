@@ -3,8 +3,6 @@
 
 import unittest
 
-from Events.EventFactory import EventFactory
-
 
 class MyTestCase(unittest.TestCase):
 
