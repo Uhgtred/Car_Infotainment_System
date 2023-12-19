@@ -25,6 +25,6 @@ RUN python -m venv /py && \
 
 ENV PATH = "/py/bin:$PATH"
 # Run command
-CMD [ "python", "unittest", "discover", "-s", "tests" ]
+#CMD [ "python", "unittest", "discover", "-s", "tests" ]
 
 USER containeruser
