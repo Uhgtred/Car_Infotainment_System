@@ -16,8 +16,7 @@ EXPOSE 8000
 # Install dependencies
 COPY requirements.txt ./
 
-RUN pip install --upgrade pip && \
-    python -m venv /py && \
+RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
