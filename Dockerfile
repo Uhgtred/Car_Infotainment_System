@@ -16,11 +16,12 @@ EXPOSE 8000
 # Install dependencies
 COPY requirements.txt ./
 
-RUN pip install --upgrade pip && \
-    python -m venv /py && \
+RUN python -m venv /py && \
+    pip install --upgrade pip && \
+#    python -m venv /py && \
 #    /py/bin/pip install --upgrade pip && \
 #    /py/bin/pip install -r /tmp/requirements.txt && \
-    rm -rf /tmp/ && \
+    rm -rf /tmp/
 
 # Run command
 CMD [ "python", "-m", "unittest", "discover", "-s", "tests" ]
