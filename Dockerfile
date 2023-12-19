@@ -17,7 +17,6 @@ EXPOSE 8000
 COPY requirements.txt ./
 
 RUN python -m install --upgrade pip && \
-    /py/bin/pip install --upgrade pip && \
     python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     apk add --update --no-cache postgresql-client && \
@@ -25,9 +24,9 @@ RUN python -m install --upgrade pip && \
       build-base postgresql-dev musl-dev && \
     /py/bin/pip install -r /tmp/requirements.txt && \
     rm -rf /tmp/ && \
-    apk del .tmp-build-deps && \
+    apk del .tmp-build-deps
 
 # Run command
-#CMD [ "python", "-m", "unittest", "discover", "-s", "tests" ]
+CMD [ "python", "-m", "unittest", "discover", "-s", "tests" ]
 
 USER containeruser
