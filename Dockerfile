@@ -14,7 +14,7 @@ WORKDIR /app
 EXPOSE 8000
 # Install dependencies
 COPY requirements.txt ./
-ENV PATH="/py/bin:$PATH"
+
 RUN python --version
 #python -m install --upgrade pip
 #    /py/bin/pip install --upgrade pip && \
