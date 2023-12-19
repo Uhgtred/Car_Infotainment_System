@@ -23,6 +23,7 @@ RUN python -m venv /py && \
     /py/bin/pip install -r /tmp/requirements.txt && \
     rm -rf /tmp/
 
+ENV PATH = "/py/bin:$PATH"
 # Run command
 CMD [ "python", "-m", "unittest", "discover", "-s", "tests" ]
 
