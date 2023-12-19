@@ -21,7 +21,6 @@ RUN python -m install --upgrade pip && \
 #    /py/bin/pip install --upgrade pip && \
 #    /py/bin/pip install -r /tmp/requirements.txt && \
     rm -rf /tmp/ && \
-    apk del .tmp-build-deps
 
 # Run command
 CMD [ "python", "-m", "unittest", "discover", "-s", "tests" ]
