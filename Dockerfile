@@ -1,4 +1,5 @@
 FROM ubuntu:latest
+FROM python:latest
 LABEL authors="markus"
 
 ENTRYPOINT ["top", "-b"]
@@ -15,7 +16,7 @@ EXPOSE 8000
 # Install dependencies
 COPY requirements.txt ./
 
-RUN ls #python --version
+RUN python --version
 #python -m install --upgrade pip
 #    /py/bin/pip install --upgrade pip && \
 #    python -m venv /py && \
