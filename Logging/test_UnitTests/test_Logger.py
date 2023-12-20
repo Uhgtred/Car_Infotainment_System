@@ -16,7 +16,7 @@ class MyTestCase(unittest.TestCase):
         testDict = {'1stTest': 'info', '2ndTest': 'info', '3rdTest': 'warning'}
         for key in testDict:
             self.logger.createLogEntry(testDict.get(key), __name__, key)
-        with open(self.logfile, 'w') as logFile:
+        with open(self.logfile, 'rw') as logFile:
             lines = logFile.readlines()
         for line in lines:
             assert 'Test' in line
