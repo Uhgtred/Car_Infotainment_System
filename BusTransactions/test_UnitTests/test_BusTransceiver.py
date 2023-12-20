@@ -29,6 +29,7 @@ class MyTestCase(unittest.TestCase):
     def test_BusTransceiver_readSingleMessage(self):
         self.transceiver.writeSingleMessage(self.testString)
         self.messages.append(str(self.transceiver.readSingleMessage()))
+        print(self.messages)
         for message in self.messages:
             if self.testString in message:
                 break
