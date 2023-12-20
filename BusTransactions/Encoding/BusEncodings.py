@@ -1,7 +1,28 @@
 #!/usr/bin/env python3
 # @author Markus Kösters
+from typing import Protocol
 
-from .EncodingInterface import EncodingProtocol
+
+class EncodingProtocol(Protocol):
+    """
+    Protocol for prescribing the structure of the encoding.
+    """
+
+    @staticmethod
+    def decode(message: any) -> any:
+        """
+        Method for decoding a message received from a bus.
+        :param message: Message from bus that needs to be decoded.
+        """
+        pass
+
+    @staticmethod
+    def encode(message: any) -> any:
+        """
+        Method for encoding a message that will be sent to a bus.
+        :param message: Message that needs to be encoded.
+        """
+        pass
 
 
 class ArduinoSerialEncoding(EncodingProtocol):
@@ -15,7 +36,10 @@ class ArduinoSerialEncoding(EncodingProtocol):
         Method for decoding a message received from a bus.
         :param message: Message from bus that needs to be decoded.
         """
-        return message.decode()
+        if message:
+            message = message.decode()
+        return message
+
 
     @staticmethod
     def encode(message: str) -> any:
@@ -23,5 +47,6 @@ class ArduinoSerialEncoding(EncodingProtocol):
         Method for encoding a message that will be sent to a bus.
         :param message: Message that needs to be encoded.
         """
-        message = f'{message}&'
-        return message.encode()
+        if message:
+            message = f'{message}&'.encode()
+        return message

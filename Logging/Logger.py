@@ -28,7 +28,6 @@ class Logger(LoggingInterface):
         :param moduleName: Name of the module that is getting logged. Used for creating a filename.
         :return: File-Handler that is being used to store the log-messages into.
         """
-        print(moduleName)
         fileHandler = logging.FileHandler(f'{moduleName}.log', mode='w')
         self.__logFormatter(fileHandler)
         return fileHandler

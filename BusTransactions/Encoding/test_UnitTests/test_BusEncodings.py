@@ -3,12 +3,12 @@
 import inspect
 import unittest
 
-from BusTransactions import EncodingInterface
+from BusTransactions import EncodingFactory
 
 
 class MyTestCase(unittest.TestCase):
 
-    encoding = EncodingInterface
+    encoding = EncodingFactory
 
     def test_decode(self):
         """

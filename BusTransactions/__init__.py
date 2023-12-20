@@ -3,6 +3,6 @@
 
 from .BusInterface import BusInterface
 from .BusInterfaceFactory import BusInterfaceFactory
-from .Encoding import EncodingInterface
+from .Encoding import EncodingFactory
 from .Buses import SerialBusConfig, SerialBus
 from .Bus import Bus

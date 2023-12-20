@@ -3,7 +3,7 @@
 
 from typing import Protocol
 
-from BusTransactions.Encoding import EncodingInterface
+from BusTransactions.Encoding import EncodingFactory
 
 
 class Bus(Protocol):
@@ -30,7 +30,7 @@ class BusInterface:
     Class for communication with a variety of bus-systems.
     """
 
-    def __init__(self, bus: Bus, encoding: EncodingInterface):
+    def __init__(self, bus: Bus, encoding: EncodingFactory):
         """
         :param bus: Bus that shall be communicated with. Needs to follow the protocol Bus.
         :param encoding: Encoding that will be used to make the messages compliant to the bus.
@@ -39,7 +39,7 @@ class BusInterface:
         self.encoding = encoding
         self.bus = bus
 
-    def readSingleMessage(self) -> EncodingInterface:
+    def readSingleMessage(self) -> EncodingFactory:
         """
         Read and decode a single message from the bus.
         :return: Decoded message.
