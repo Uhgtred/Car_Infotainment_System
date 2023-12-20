@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # @author: Markus Kösters
-
+import time
 import unittest
 
 from BusTransactions import BusInterfaceFactory, SerialBus, SerialBusConfig
@@ -17,6 +17,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_BusTransceiver_writeSingleMessage(self):
         self.transceiver.writeSingleMessage(self.testString)
+        time.sleep(1)
         print(self.transceiver.bus.bus.getBuffer[0])
         assert self.testString.encode() in self.transceiver.bus.bus.getBuffer[0]
 
