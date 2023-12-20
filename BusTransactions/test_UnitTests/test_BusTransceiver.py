@@ -18,9 +18,7 @@ class MyTestCase(unittest.TestCase):
     def test_BusTransceiver_writeSingleMessage(self):
         self.transceiver.writeSingleMessage(self.testString)
         buffer = self.transceiver.bus.bus.getBuffer
-        print(buffer)
         for message in buffer:
-            print(message)
             if self.testString.encode() in message:
                 break
         else:
@@ -30,6 +28,7 @@ class MyTestCase(unittest.TestCase):
     def test_BusTransceiver_readSingleMessage(self):
         self.transceiver.writeSingleMessage(self.testString)
         message = self.transceiver.readSingleMessage()
+        print(message)
         assert self.testString in message
 
 
