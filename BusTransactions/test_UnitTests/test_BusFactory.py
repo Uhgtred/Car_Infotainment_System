@@ -14,7 +14,7 @@ class MyTestCase(unittest.TestCase):
 
     busFactory = BusInterfaceFactory()
     bus = SerialBus
-    mockLibrary = MockBus
+    mockLibrary = MockSerialBus
 
     def test_produceBusTransceiver(self):
         config = SerialBusConfig('test', 123, self.mockLibrary)
