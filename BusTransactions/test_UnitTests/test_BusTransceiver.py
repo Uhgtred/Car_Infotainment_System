@@ -9,7 +9,6 @@ from BusTransactions import Encoding
 
 
 class MyTestCase(unittest.TestCase):
-
     transceiver = BusInterfaceFactory()
     config = SerialBusConfig('test', 123, MockSerialBus)
     bus = SerialBus(config)
@@ -18,12 +17,14 @@ class MyTestCase(unittest.TestCase):
 
     def test_BusTransceiver_writeSingleMessage(self):
         self.transceiver.writeSingleMessage(self.testString)
+        print(self.transceiver.bus.bus.getBuffer[0])
         assert self.testString.encode() in self.transceiver.bus.bus.getBuffer[0]
 
     def test_BusTransceiver_readSingleMessage(self):
         self.transceiver.writeSingleMessage(self.testString)
         message = self.transceiver.readSingleMessage()
         assert self.testString in message
+
 
 if __name__ == '__main__':
     unittest.main()
