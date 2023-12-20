@@ -27,6 +27,10 @@ class MyTestCase(unittest.TestCase):
         assert True
 
     def test_BusTransceiver_readSingleMessage(self):
+        """
+        :TODO: make sure only one instance can read one message.
+        :return:
+        """
         self.transceiver.writeSingleMessage(self.testString)
         message = "none"
         while message:
