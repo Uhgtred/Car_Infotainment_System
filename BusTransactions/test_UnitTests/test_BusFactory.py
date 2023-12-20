@@ -17,10 +17,9 @@ class MyTestCase(unittest.TestCase):
 
     def test_produceBusTransceiver(self):
         config = SerialBusConfig('test', 123, self.mockLibrary)
-        encoding = Encoding.EncodingFactory.arduinoSerialEncoding()
+        encoding = Encoding.EncodingFactory.arduinoSerialEncoding
         bus = SerialBus(config)
         transceiver = self.busFactory.produceBusTransceiver(bus, encoding)
-        print(transceiver)
         assert isinstance(transceiver, BusInterface)
 
 

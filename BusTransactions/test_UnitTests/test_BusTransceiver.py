@@ -5,7 +5,7 @@ import unittest
 
 from BusTransactions import BusInterfaceFactory, SerialBus, SerialBusConfig
 from BusTransactions.Buses.SerialBusModule.test_UnitTests.SerialBusMock import MockSerialBus
-from BusTransactions.Encoding import EncodingFactory
+from BusTransactions import Encoding
 
 
 class MyTestCase(unittest.TestCase):
@@ -13,7 +13,7 @@ class MyTestCase(unittest.TestCase):
     transceiver = BusInterfaceFactory()
     config = SerialBusConfig('test', 123, MockSerialBus)
     bus = SerialBus(config)
-    transceiver = transceiver.produceBusTransceiver(bus, EncodingFactory.arduinoSerialEncoding)
+    transceiver = transceiver.produceBusTransceiver(bus, Encoding.EncodingFactory.arduinoSerialEncoding)
     testString = 'Test from BusTransceiver'
 
     def test_BusTransceiver_writeSingleMessage(self):

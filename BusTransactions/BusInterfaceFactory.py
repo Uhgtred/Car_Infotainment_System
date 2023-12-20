@@ -18,7 +18,7 @@ class BusInterfaceFactory:
         :param bus: Bus-Class that will be communicated with, produced by Factory-class in Buses-Module.
         :param encoding: Encoding that decides the format of the messages.
         """
-        transceiver = BusInterface(bus, encoding)
+        transceiver = BusInterface(bus, encoding())
         return transceiver
 
     @staticmethod
