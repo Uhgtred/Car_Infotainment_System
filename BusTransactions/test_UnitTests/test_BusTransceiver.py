@@ -18,6 +18,7 @@ class MyTestCase(unittest.TestCase):
     def test_BusTransceiver_writeSingleMessage(self):
         self.transceiver.writeSingleMessage(self.testString)
         buffer = self.transceiver.bus.bus.getBuffer
+        print(buffer)
         assert self.testString.encode() in buffer[0]
 
     def test_BusTransceiver_readSingleMessage(self):
