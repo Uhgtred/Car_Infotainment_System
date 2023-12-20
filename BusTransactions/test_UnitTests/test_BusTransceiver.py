@@ -27,9 +27,11 @@ class MyTestCase(unittest.TestCase):
 
     def test_BusTransceiver_readSingleMessage(self):
         self.transceiver.writeSingleMessage(self.testString)
-        message = self.transceiver.readSingleMessage()
+        message = str(self.transceiver.readSingleMessage())
+        if message.endswith('&'):
+            message = message[:-1]
         print(message)
-        assert self.testString in message
+        self.assertEqual(self.testString, message)
 
 
 if __name__ == '__main__':
