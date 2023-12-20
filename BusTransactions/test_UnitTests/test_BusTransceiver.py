@@ -28,6 +28,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_BusTransceiver_readSingleMessage(self):
         self.transceiver.writeSingleMessage(self.testString)
+        time.sleep(1)
         self.messages.append(str(self.transceiver.readSingleMessage()))
         print(self.messages)
         for message in self.messages:
