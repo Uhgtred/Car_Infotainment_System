@@ -6,7 +6,7 @@ import unittest
 from BusTransactions import BusInterfaceFactory, BusInterface
 from BusTransactions import SerialBusConfig
 from BusTransactions import SerialBus
-from BusTransactions.Buses.SerialBusModule.test_UnitTests.test_SerialBus import MockBus
+from BusTransactions.Buses.SerialBusModule.test_UnitTests.SerialBusMock import MockSerialBus
 from BusTransactions import Encoding
 
 
