@@ -4,26 +4,24 @@
 import unittest
 
 from BusTransactions import BusInterfaceFactory, BusInterface
+from BusTransactions import SerialBusConfig
 from BusTransactions import SerialBus
 from BusTransactions.Buses.SerialBusModule.test_UnitTests.SerialBusMock import MockSerialBus
+from BusTransactions import Encoding
 
 
 class MyTestCase(unittest.TestCase):
 
     busFactory = BusInterfaceFactory()
-    bus = SerialBus
     mockLibrary = MockSerialBus
 
     def test_produceBusTransceiver(self):
-        """TODO: code is not testable. Check architecture for quality."""
-        pass
-        # transceivers = []
-        # for method in dir(self.busFactory):
-        #     if not method.startswith("__"):
-        #         transceiver = getattr(self.busFactory, method)()
-        #         transceivers.append(transceiver)
-        # for transceiver in transceivers:
-        #     assert isinstance(transceiver, BusInterface)
+        config = SerialBusConfig('test', 123, self.mockLibrary)
+        encoding = Encoding.EncodingFactory.arduinoSerialEncoding()
+        bus = SerialBus(config)
+        transceiver = self.busFactory.produceBusTransceiver(bus, encoding)
+        print(transceiver)
+        assert isinstance(transceiver, BusInterface)
 
 
 if __name__ == '__main__':

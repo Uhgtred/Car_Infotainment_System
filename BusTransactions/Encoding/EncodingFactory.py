@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # @author Markus Kösters
 
-from .BusEncodings import ArduinoSerialEncoding
+from . import BusEncodings
 
 
-class EncodingInterface:
+class EncodingFactory:
     """
     Container to make all Encodings available through one object.
     """
 
     @staticmethod
     def arduinoSerialEncoding():
-        return ArduinoSerialEncoding()
+        return BusEncodings.ArduinoSerialEncoding()
