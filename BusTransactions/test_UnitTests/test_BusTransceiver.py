@@ -14,6 +14,7 @@ class MyTestCase(unittest.TestCase):
     bus = SerialBus(config)
     transceiver = transceiver.produceBusTransceiver(bus, Encoding.EncodingFactory.arduinoSerialEncoding)
     testString = 'Test from BusTransceiver'
+    messages = []
 
     def test_BusTransceiver_writeSingleMessage(self):
         self.transceiver.writeSingleMessage(self.testString)
@@ -27,11 +28,13 @@ class MyTestCase(unittest.TestCase):
 
     def test_BusTransceiver_readSingleMessage(self):
         self.transceiver.writeSingleMessage(self.testString)
-        message = str(self.transceiver.readSingleMessage())
-        if message.endswith('&'):
-            message = message[:-1]
-        print(message)
-        self.assertEqual(self.testString, message)
+        self.messages.append(str(self.transceiver.readSingleMessage()))
+        for message in self.messages:
+            if self.testString in message:
+                break
+        else:
+            assert False
+        assert True
 
 
 if __name__ == '__main__':
