@@ -37,14 +37,14 @@ class MyTestCase(unittest.TestCase):
         print(self.transceiver.bus.bus.getBuffer)
         message = self.transceiver.readSingleMessage()
         print(self.transceiver.bus.bus.getBuffer)
-        self.messages.append(message)
         print(f'messsages received: {self.messages}')
-        for message in self.messages:
-            if self.testString in message:
-                break
-        else:
-            assert False
-        assert True
+        self.assertEqual(message, self.testString)
+        # for message in self.messages:
+        #     if self.testString in message:
+        #         break
+        # else:
+        #     assert False
+        # assert True
 
 
 if __name__ == '__main__':
