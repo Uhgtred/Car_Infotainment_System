@@ -21,11 +21,3 @@ class Bus(ABC):
         :param message: Message that shall be sent to the bus.
         """
         pass
-
-    @abstractmethod
-    def _setupBus(self) -> object:
-        """
-        Method for setting up a bus-configuration.
-        :return:
-        """
-        pass

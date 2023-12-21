@@ -34,7 +34,9 @@ class MyTestCase(unittest.TestCase):
         self.transceiver.writeSingleMessage(self.testString)
         message = "none"
         while message:
+            print(self.transceiver.bus.bus.getBuffer)
             message = self.transceiver.readSingleMessage()
+            print(self.transceiver.bus.bus.getBuffer)
             self.messages.append(message)
         print(self.messages)
         for message in self.messages:

@@ -12,8 +12,9 @@ class MockSerialBus:
     def write(self, message):
         self.buffer.append(message)
 
-    def isOpen(self):
-        return self.state
+    @classmethod
+    def is_open(cls):
+        return cls.state
 
     def open(self):
         self.state = True
