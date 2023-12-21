@@ -14,14 +14,10 @@ class SerialBus(Bus):
     """
 
     def __init__(self, config: SerialBusConfig):
-        # check if the busLibrary-object has already been instanced
-        if callable(config.busLibrary):
-            self.bus = config.busLibrary()
-        else:
-            self.bus = config.busLibrary
-        self.__port = config.port
-        self.__baudRate = config.baudRate
-        self.bus: serial.Serial = self._setupBus()
+        self.bus = None
+        self.__port = None
+        self.__baudRate = None
+        self.setConfig(config)
         # Making sure the bus is closed when instance dies.
         atexit.register(self.bus.close)
 
@@ -39,13 +35,26 @@ class SerialBus(Bus):
         """
         self.bus.write(message)
 
-    def _setupBus(self) -> object:
+    def _setupBus(self, bus: serial.Serial) -> object:
         """
         Initializing the microcontroller bus-settings.
         """
-        bus = self.bus
         bus.baudrate = self.__baudRate
         bus.port = self.__port
-        if not bus.isOpen():
+        if not bus.is_open:
             bus.open()
         return bus
+
+    def setConfig(self, config: SerialBusConfig) -> None:
+        """
+        Setter-method for the config.
+        :param config: Dictionary containing the information about the bus.
+        """
+        # check if the busLibrary-object has already been instanced
+        if callable(config.busLibrary):
+            bus = config.busLibrary()
+        else:
+            bus = config.busLibrary
+        self.__port = config.port
+        self.__baudRate = config.baudRate
+        self.bus: serial.Serial = self._setupBus(bus)

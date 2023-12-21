@@ -18,31 +18,13 @@ class MyTestCase(unittest.TestCase):
 
     def test_BusTransceiver_writeSingleMessage(self):
         self.transceiver.writeSingleMessage(self.testString)
-        buffer = self.transceiver.bus.bus.getBuffer
-        for message in buffer:
-            if self.testString.encode() in message:
-                break
-        else:
-            assert False
-        assert True
+        message = self.transceiver.bus.bus.buffer.pop(0)
+        self.assertEqual(message[:-1], self.testString.encode())
 
     def test_BusTransceiver_readSingleMessage(self):
-        """
-        :TODO: make sure only one instance can read one message.
-        :return:
-        """
         self.transceiver.writeSingleMessage(self.testString)
-        message = "none"
-        while message:
-            message = self.transceiver.readSingleMessage()
-            self.messages.append(message)
-        print(self.messages)
-        for message in self.messages:
-            if self.testString in message:
-                break
-        else:
-            assert False
-        assert True
+        message = self.transceiver.readSingleMessage()
+        self.assertEqual(message, self.testString)
 
 
 if __name__ == '__main__':
