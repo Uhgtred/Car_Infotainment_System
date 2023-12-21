@@ -24,6 +24,7 @@ class MyTestCase(unittest.TestCase):
                 break
         else:
             assert False
+        self.transceiver.bus.bus.buffer.pop(0)
         assert True
 
     def test_BusTransceiver_readSingleMessage(self):
