@@ -13,17 +13,16 @@ class MyTestCase(unittest.TestCase):
     config = SerialBusConfig('test', 123, MockSerialBus)
     # print(config)
     bus = SerialBus(config)
+    testString = b'Hello World'
 
     def test_write(self):
-        testString = b'Hello World'
-        self.bus.writeBus(testString)
-        assert testString in self.bus.bus.getBuffer
+        self.bus.writeBus(self.testString)
+        assert self.testString in self.bus.bus.getBuffer
 
     def test_read(self):
-        testString = b'Hello World'
-        self.bus.writeBus(testString)
+        # self.bus.writeBus(testString) # needed when only this method is tested
         message = self.bus.readBus()
-        assert message == testString
+        assert message == self.testString
 
 
 if __name__ == '__main__':

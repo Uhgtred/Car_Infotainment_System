@@ -31,13 +31,13 @@ class MyTestCase(unittest.TestCase):
         :TODO: make sure only one instance can read one message.
         :return:
         """
-        self.transceiver.writeSingleMessage(self.testString)
+        # self.transceiver.writeSingleMessage(self.testString) # needed if only this method is tested.
         message = "none"
-        while message:
-            print(self.transceiver.bus.bus.getBuffer)
-            message = self.transceiver.readSingleMessage()
-            print(self.transceiver.bus.bus.getBuffer)
-            self.messages.append(message)
+        # while message:
+        print(self.transceiver.bus.bus.getBuffer)
+        message = self.transceiver.readSingleMessage()
+        print(self.transceiver.bus.bus.getBuffer)
+        self.messages.append(message)
         print(self.messages)
         for message in self.messages:
             if self.testString in message:
