@@ -37,7 +37,7 @@ class MyTestCase(unittest.TestCase):
         print(self.transceiver.bus.bus.getBuffer)
         message = self.transceiver.readSingleMessage()
         print(self.transceiver.bus.bus.getBuffer)
-        print(f'messsages received: {self.messages}')
+        print(f'messsages received: {message}, message searched for: {self.testString}')
         self.assertEqual(message, self.testString)
         # for message in self.messages:
         #     if self.testString in message:
