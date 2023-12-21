@@ -38,6 +38,8 @@ class ArduinoSerialEncoding(EncodingProtocol):
         """
         if message:
             message = message.decode()
+        if message.endswith('&'):
+            message = message[:-1]
         return message
 
 
