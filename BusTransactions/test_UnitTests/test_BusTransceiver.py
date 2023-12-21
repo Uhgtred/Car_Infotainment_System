@@ -32,19 +32,13 @@ class MyTestCase(unittest.TestCase):
         :return:
         """
         # self.transceiver.writeSingleMessage(self.testString) # needed if only this method is tested.
-        message = "none"
-        # while message:
         print(self.transceiver.bus.bus.getBuffer)
         message = self.transceiver.readSingleMessage()
         print(self.transceiver.bus.bus.getBuffer)
         print(f'messsages received: {message}, message searched for: {self.testString}')
+        if message.endswith('&'):
+            message = message[:-1]
         self.assertEqual(message, self.testString)
-        # for message in self.messages:
-        #     if self.testString in message:
-        #         break
-        # else:
-        #     assert False
-        # assert True
 
 
 if __name__ == '__main__':
