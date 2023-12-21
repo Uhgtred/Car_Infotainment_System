@@ -38,7 +38,7 @@ class MyTestCase(unittest.TestCase):
         message = self.transceiver.readSingleMessage()
         print(self.transceiver.bus.bus.getBuffer)
         self.messages.append(message)
-        print(self.messages)
+        print(f'messsages received: {self.messages}')
         for message in self.messages:
             if self.testString in message:
                 break
