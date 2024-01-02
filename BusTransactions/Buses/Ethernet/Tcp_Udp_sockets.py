@@ -28,10 +28,10 @@ class UdpSocket(Bus):
         """
         self.__sock.sendto(message, self.__address)
 
-    def _setupSocket(self, sock: socket.socket) -> None:
+    def _setupSocket(self, sock: socket) -> None:
         """
         Private Method for setting up UDP-socket.
         :param sock: socket that will be setup and bound.
         """
-        self.__sock = sock(socket.AF_INET, socket.SOCK_DGRAM)
+        self.__sock = sock.socket(sock.AF_INET, sock.SOCK_DGRAM)
         self.__sock.bind(self.__address)

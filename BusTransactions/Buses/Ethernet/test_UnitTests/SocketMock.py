@@ -4,9 +4,6 @@
 class MockSocket:
     buffer = []
 
-    def __init__(self, config):
-        pass
-
     def read(self):
         if self.buffer:
             return self.buffer.pop(0)
