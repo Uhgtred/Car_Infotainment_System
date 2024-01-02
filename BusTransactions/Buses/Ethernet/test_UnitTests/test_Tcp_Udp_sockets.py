@@ -9,7 +9,7 @@ from BusTransactions.Buses.Ethernet.test_UnitTests import SocketMock
 
 class MyTestCase(unittest.TestCase):
     # print(MockBus)
-    config = SocketConfigs.UdpSocketConfig(1234, 'test.test.test.test', SocketMock)
+    config = SocketConfigs.UdpSocketConfig(1234, 'test.test.test.test', 4096, SocketMock)
     # print(config)
     bus = Tcp_Udp_sockets.UdpSocket(config)
     testString = b'Hello World'

@@ -12,6 +12,7 @@ class UdpSocket(Bus):
     def __init__(self, config: SocketConfigs.UdpSocketConfig):
         sockLibrary = config.busLibrary
         self._setupSocket(sockLibrary)
+        self.__messageSize = config.messageSize
         self.__address = (config.IPAddress, config.port)
 
     def readBus(self) -> bytes:
@@ -19,7 +20,7 @@ class UdpSocket(Bus):
         Method that reads the UDP socket.
         :return: Message read from the UDP socket.
         """
-        return self.__sock.recvfrom(1024)
+        return self.__sock.recvfrom(self.__messageSize)
 
     def writeBus(self, message: bytes) -> None:
         """

@@ -9,13 +9,13 @@ class MockSocket:
         if self.buffer:
             return self.buffer.pop(0)
 
-    def socket(self):
+    def socket(self, *args):
         if self.state:
             self.state = True
         else:
             self.state = False
 
-    def write(self, message):
+    def sendto(self, message, ):
         self.buffer.append(message)
 
     @property
