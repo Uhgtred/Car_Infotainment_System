@@ -4,6 +4,9 @@
 class MockSocket:
     buffer = []
     state = False
+    AF_INET = None
+    SOCK_STREAM = None
+    SOCK_DGRAM = None
 
     def read(self):
         if self.buffer:

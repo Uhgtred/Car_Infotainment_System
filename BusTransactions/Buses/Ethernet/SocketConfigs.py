@@ -13,4 +13,4 @@ class UdpSocketConfig:
     port: int
     IPAddress: str
     messageSize: int
-    busLibrary: socket.socket = socket.socket
+    busLibrary: socket = socket
