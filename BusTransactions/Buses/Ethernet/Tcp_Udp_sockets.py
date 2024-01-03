@@ -27,7 +27,7 @@ class UdpSocket(Bus):
         # running loop until size of message-length (headerLength (8byte)) has been reached
         msgLength = self.__receiver(headerLength)
         # unpacking the message-length
-        msgLength = struct.unpack('Q', msgLength)[0]
+        msgLength = int(struct.unpack('Q', msgLength)[0])
         # --- Receiving header containing message-data --- #
         msgData = self.__receiver(msgLength)
         return msgData
