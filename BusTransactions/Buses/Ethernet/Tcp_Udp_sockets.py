@@ -3,7 +3,7 @@
 
 import socket
 
-from BusTransactions import Bus
+from BusTransactions.Bus import Bus
 from . import SocketConfigs
 
 
