@@ -8,10 +8,10 @@ class MockSocket:
     SOCK_STREAM = None
     SOCK_DGRAM = None
 
-    @staticmethod
-    def recvfrom(self):
-        if self.buffer:
-            return self.buffer.pop(0)
+    @classmethod
+    def recvfrom(cls):
+        if cls.buffer:
+            return cls.buffer.pop(0)
         else:
             return None
 
