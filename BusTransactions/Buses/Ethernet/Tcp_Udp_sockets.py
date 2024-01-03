@@ -11,9 +11,9 @@ class UdpSocket(Bus):
 
     def __init__(self, config: SocketConfigs.UdpSocketConfig):
         sockLibrary = config.busLibrary
-        self._setupSocket(sockLibrary)
         self.__messageSize = config.messageSize
         self.__address = (config.IPAddress, config.port)
+        self._setupSocket(sockLibrary)
 
     def readBus(self) -> bytes:
         """

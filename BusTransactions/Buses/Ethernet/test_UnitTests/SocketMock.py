@@ -22,6 +22,7 @@ class MockSocket:
             cls.state = True
         else:
             cls.state = False
+        return cls
 
     def sendto(self, message, ):
         self.buffer.append(message)
