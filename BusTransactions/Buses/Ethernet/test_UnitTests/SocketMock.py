@@ -9,9 +9,9 @@ class MockSocket:
     SOCK_DGRAM = None
 
     @classmethod
-    def recvfrom(cls):
+    def recvfrom(cls, messageSize):
         if cls.buffer:
-            return cls.buffer.pop(0)
+            return cls.buffer.pop(0)[:messageSize]
         else:
             return None
 
