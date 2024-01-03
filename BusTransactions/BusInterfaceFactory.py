@@ -18,17 +18,27 @@ class BusInterfaceFactory:
         :param bus: Bus-Class that will be communicated with, produced by Factory-class in Buses-Module.
         :param encoding: Encoding that decides the format of the messages.
         """
-        transceiver = BusInterface(bus, encoding())
+        # check if encoding has already been instanced
+        if callable(encoding):
+            encoding = encoding()
+        transceiver = BusInterface(bus, encoding)
         return transceiver
 
-    @staticmethod
-    def produceSerialTransceiver() -> BusInterface:
+    @classmethod
+    def produceSerialTransceiver(cls) -> BusInterface:
         """
         Method for creating an instance of a serial-bus transceiver that connects to arduino.
         """
         encoding = EncodingFactory.arduinoSerialEncoding
         busModule = BusFactory.produceSerialBusArduino()
-        # check if encoding has already been instanced
-        if callable(encoding):
-            encoding = encoding()
-        return BusInterface(busModule, encoding)
+        return cls.produceBusTransceiver(busModule, encoding)
+
+    @classmethod
+    def produceUDP_Transceiver(cls) -> BusInterface:
+        """
+        Method for creating an instance of an udp-socket.
+        :return:
+        """
+        encoding = EncodingFactory.socketEncoding()  # needs to get its own encoding
+        busModule = BusFactory.produceUdpSocket()
+        return cls.produceBusTransceiver(busModule, encoding)

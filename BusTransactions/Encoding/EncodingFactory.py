@@ -12,3 +12,7 @@ class EncodingFactory:
     @staticmethod
     def arduinoSerialEncoding():
         return BusEncodings.ArduinoSerialEncoding()
+
+    @staticmethod
+    def socketEncoding():
+        return BusEncodings.SocketEncoding()
