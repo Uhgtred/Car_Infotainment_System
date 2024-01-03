@@ -24,7 +24,8 @@ class MockSocket:
             cls.state = False
         return cls
 
-    def sendto(self, message, ):
+    def sendto(self, message, address):
+        print(f'Sending message: {message} to socket: {address}')
         self.buffer.append(message)
 
     @property
