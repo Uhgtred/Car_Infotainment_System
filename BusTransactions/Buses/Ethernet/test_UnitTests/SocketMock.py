@@ -8,9 +8,11 @@ class MockSocket:
     SOCK_STREAM = None
     SOCK_DGRAM = None
 
-    def read(self):
+    def recvfrom(self):
         if self.buffer:
             return self.buffer.pop(0)
+        else:
+            return None
 
     @staticmethod
     def bind(address):
