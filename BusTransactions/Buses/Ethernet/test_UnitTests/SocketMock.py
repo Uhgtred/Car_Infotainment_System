@@ -12,6 +12,10 @@ class MockSocket:
         if self.buffer:
             return self.buffer.pop(0)
 
+    @staticmethod
+    def bind(address):
+        print(f'Address of socket: {address}')
+
     @classmethod
     def socket(cls, *args):
         if cls.state:
