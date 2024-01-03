@@ -12,11 +12,12 @@ class MockSocket:
         if self.buffer:
             return self.buffer.pop(0)
 
-    def socket(self, *args):
-        if self.state:
-            self.state = True
+    @classmethod
+    def socket(cls, *args):
+        if cls.state:
+            cls.state = True
         else:
-            self.state = False
+            cls.state = False
 
     def sendto(self, message, ):
         self.buffer.append(message)
