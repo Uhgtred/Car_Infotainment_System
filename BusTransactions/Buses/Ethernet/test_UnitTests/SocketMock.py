@@ -2,6 +2,9 @@
 # @author: Markus Kösters
 
 class MockSocket:
+    """
+    Todo: make the buffer a dictionary with IP as key and buffer as value.
+    """
     buffer = []
     state = False
     AF_INET = None
@@ -10,9 +13,11 @@ class MockSocket:
 
     @classmethod
     def recvfrom(cls, messageSize):
+        print(f'Receiving {messageSize} bytes.')
         if cls.buffer:
             message = cls.buffer.pop(0)
-            cls.buffer.append(message[messageSize:])
+            if len(message[messageSize:]) > 0:
+                cls.buffer.append(message[messageSize:])
             return message[:messageSize]
         else:
             return None
