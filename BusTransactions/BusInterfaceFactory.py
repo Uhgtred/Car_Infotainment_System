@@ -34,11 +34,11 @@ class BusInterfaceFactory:
         return cls.produceBusTransceiver(busModule, encoding)
 
     @classmethod
-    def produceUDP_Transceiver(cls) -> BusInterface:
+    def produceUDP_Transceiver(cls, port: int) -> BusInterface:
         """
         Method for creating an instance of an udp-socket.
         :return:
         """
-        encoding = EncodingFactory.socketEncoding()  # needs to get its own encoding
-        busModule = BusFactory.produceUdpSocket()
+        encoding = EncodingFactory.socketEncoding()
+        busModule = BusFactory.produceUdpSocket(port)  # Todo: make check if some socket is already running on that port, could be the wrong location for that here!
         return cls.produceBusTransceiver(busModule, encoding)

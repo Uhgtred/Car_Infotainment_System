@@ -2,9 +2,12 @@
 # @author: Markus Kösters
 
 from rest_framework import serializers
-from API.models import pass
+from API import models
 
-class passSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = pass
-        fields = '__all__'
+
+class SocketSerializer(serializers.ModelSerializer):
+    """
+    Method for serializing data needed to create a socket object.
+    """
+    port = serializers.IntegerField()
+    socketType = serializers.CharField()
