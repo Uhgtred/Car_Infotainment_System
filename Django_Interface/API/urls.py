@@ -2,8 +2,8 @@
 # @author: Markus Kösters
 
 from django.urls import path
-from .views import GetSocketInstance
+from .views import GetUdpSocketInstance
 
 urlpatterns = [
-    path('getSocketInstance', GetSocketInstance, name='getUDPTransceiver')
+    path('getUdpSocketInstance', GetUdpSocketInstance, name='getUDPTransceiver')
 ]

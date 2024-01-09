@@ -2,9 +2,9 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from serializers import SocketSerializer
 
-from BusTransactions import BusInterfaceFactory
+from ...BusTransactions import BusInterfaceFactory
+from .serializers import SocketSerializer
 
 
 class GetSocketInstance(APIView):
