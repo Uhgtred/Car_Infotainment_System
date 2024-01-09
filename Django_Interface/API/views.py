@@ -12,8 +12,9 @@ class GetSocketInstance(APIView):
     @staticmethod
     def get(request) -> object:
         """
+        Getter method for a socket instance to communicate with the server.
         :param request: Information needed: port (int), socket-type ('udp' or 'tcp')
-        :return:
+        :return: Socket instance to run ethernet-communication through.
         """
         serializer = SocketSerializer(data=request.data)
         if serializer.is_valid():
