@@ -2,7 +2,6 @@
 # @author: Markus Kösters
 
 from rest_framework import serializers
-from API import models
 
 
 class SocketSerializer(serializers.ModelSerializer):
