@@ -11,8 +11,8 @@ api = Api(app)
 
 class SocketRequest(Resource):
 
-    def get(self, port: int) -> object:
-        return jsonify(BusInterfaceFactory.produceUDP_Transceiver(port))
+    def get(self, port: int) -> int:
+        return port
 
 
 api.add_resource(SocketRequest, '/getSocketObject/<int:port>')
