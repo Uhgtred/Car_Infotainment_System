@@ -8,7 +8,19 @@ from BusTransactions.Bus import Bus
 from . import SocketConfigs
 
 
+# Todo: Design decision: Let client decide about socket-port or give a socket-port dynamically?
+# Tendency: give socket-ports dynamically, because:
+# 1. it will make the handling easier for the client (no need to worry about socket-ports without conflict)
+# 2. it will make implementation a little easier
+# 3. control about ports is in the hands of the host
+# 4. there is no need for the client to decide which port shall be used.
+
+openSocketPorts: list = []
+
+
 class UdpSocket(Bus):
+
+    global openSocketPorts
 
     def __init__(self, config: SocketConfigs.UdpSocketConfig):
         sockLibrary = config.busLibrary
@@ -48,6 +60,7 @@ class UdpSocket(Bus):
         """
         self.sock = sock.socket(sock.AF_INET, sock.SOCK_DGRAM)
         self.sock.bind(self.__address)
+        openSocketPorts.append(self.__address[1])
 
     def __receiver(self, msgLength: int) -> bytes:
         """

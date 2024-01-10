@@ -10,9 +10,19 @@ api = Api(app)
 
 
 class SocketRequest(Resource):
+    """
+    Class to create a direct socket-connection to the server.
+    """
 
     def get(self, port: int) -> int:
-        return port
+        """
+        Method to create a direct socket-connection to the server.
+        :param port: port that the connection will run on.
+        :return: The port that the connection will run on if connection is successful. Else returns None.
+        """
+        socket = BusInterfaceFactory.produceUDP_Transceiver(port)
+        # returning socket-port if socket does exist (from open socket)
+        return socket.bus.sock.getsockname()[1]
 
 
 api.add_resource(SocketRequest, '/getSocketObject/<int:port>')
