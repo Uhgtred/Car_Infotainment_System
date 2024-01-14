@@ -8,25 +8,17 @@ from BusTransactions.Bus import Bus
 from . import SocketConfigs
 
 
-# Todo: Design decision: Let client decide about socket-port or give a socket-port dynamically?
-# Tendency: give socket-ports dynamically, because:
-# 1. it will make the handling easier for the client (no need to worry about socket-ports without conflict)
-# 2. it will make implementation a little easier
-# 3. control about ports is in the hands of the host
-# 4. there is no need for the client to decide which port shall be used.
-
-openSocketPorts: list = []
-
-
 class UdpSocket(Bus):
 
-    global openSocketPorts
+    # Todo: Implement possibility to close Socket. It will be necessary to remove it from the openPorts list as well.
+    #       Also there needs to be a limit on how many sockets can be opened simultaneously!
+    __openSocketPorts: list = []
 
     def __init__(self, config: SocketConfigs.UdpSocketConfig):
         sockLibrary = config.busLibrary
         self.sock = None
         self.__messageSize = config.messageSize
-        self.__address = (config.IPAddress, config.port)
+        self.__address = config.IPAddress
         self._setupSocket(sockLibrary)
 
     def readBus(self) -> bytes:
@@ -58,9 +50,13 @@ class UdpSocket(Bus):
         Private Method for setting up UDP-socket.
         :param sock: socket that will be setup and bound.
         """
+        # dynamically providing socket-ports for requested sockets.
+        sockPort = 2001
+        while sockPort in self.__openSocketPorts:
+            sockPort += 1
         self.sock = sock.socket(sock.AF_INET, sock.SOCK_DGRAM)
-        self.sock.bind(self.__address)
-        openSocketPorts.append(self.__address[1])
+        self.sock.bind((self.__address, sockPort))
+        self.__openSocketPorts.append(sockPort)
 
     def __receiver(self, msgLength: int) -> bytes:
         """

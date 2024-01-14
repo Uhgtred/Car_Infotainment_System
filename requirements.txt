@@ -3,3 +3,5 @@ pyserial>=3.5
 pytz==2023.3.post1
 sqlparse==0.4.4
 typing_extensions==4.8.0
+flask==3.0.0
+flask_restful==2.1.3
