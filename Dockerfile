@@ -6,16 +6,12 @@ ENTRYPOINT ["top", "-b"]
 
 # Dockerfile
 
-# Start from the Python latest image
-
-#COPY ./requirements.txt /tmp/requirements.txt
-# Copy the rest of your application's code into the container
+# Copy application's code into the container
 COPY . /app
 WORKDIR /app
 EXPOSE 8000
-## Install dependencies
-#COPY requirements.txt ./
 
+## Install dependencies
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     python -m venv /py && \
@@ -23,9 +19,8 @@ RUN python -m venv /py && \
     /py/bin/pip install -r requirements.txt && \
     rm -rf /tmp/
 
+# set environment for python-version
 ENV PATH = "/py/bin:$PATH"
-# Run command
-#CMD [ "python", "-m", "unittest"]
-#, "discover", "-s", "tests" ]
 
+# setting the user for the container
 USER containeruser
