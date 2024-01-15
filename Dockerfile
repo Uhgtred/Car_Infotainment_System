@@ -8,7 +8,7 @@ ENTRYPOINT ["top", "-b"]
 
 # Start from the Python latest image
 
-COPY ./requirements.txt /tmp/requirements.txt
+#COPY ./requirements.txt /tmp/requirements.txt
 # Copy the rest of your application's code into the container
 COPY . /app
 WORKDIR /app
