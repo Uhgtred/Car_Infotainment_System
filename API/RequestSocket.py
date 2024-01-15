@@ -11,11 +11,13 @@ class RequestSocket(Resource):
     Class to create a direct socket-connection to the server.
     """
 
-    def get(self) -> int:
+    def get(self) -> list | None:
         """
         Method to create a direct socket-connection to the server.
-        :return: The port that the connection will run on if connection is successful. Else returns None.
+        :return: List containing the ip and port that the connection will run on if connection is successful. Else returns None.
         """
         socket = BusInterfaceFactory.produceUDP_Transceiver()
-        # returning socket-port if socket does exist (from open socket)
-        return socket.bus.sock.getsockname()[1]
+        # returning socket-address and port if socket does exist (from open socket)
+        if socket is not None:
+            return list(socket.bus.sock.getsockname())
+        return None
