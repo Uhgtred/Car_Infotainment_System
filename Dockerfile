@@ -13,8 +13,8 @@ COPY ./requirements.txt /tmp/requirements.txt
 COPY . /app
 WORKDIR /app
 EXPOSE 8000
-# Install dependencies
-COPY requirements.txt ./
+## Install dependencies
+#COPY requirements.txt ./
 
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
@@ -25,7 +25,7 @@ RUN python -m venv /py && \
 
 ENV PATH = "/py/bin:$PATH"
 # Run command
-CMD [ "python", "-m", "unittest"]
+#CMD [ "python", "-m", "unittest"]
 #, "discover", "-s", "tests" ]
 
 USER containeruser
