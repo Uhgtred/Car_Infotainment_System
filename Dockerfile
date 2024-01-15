@@ -11,14 +11,14 @@ COPY . /app
 WORKDIR /app
 EXPOSE 8000
 
+# set environment for python-version
+ENV PATH = "/py/bin:$PATH"
+
 ## Install dependencies
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r requirements.txt && \
     adduser --disabled-password --no-create-home containeruser
-
-# set environment for python-version
-ENV PATH = "/py/bin:$PATH"
 
 # setting the user for the container
 USER containeruser
