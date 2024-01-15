@@ -15,7 +15,7 @@ EXPOSE 8000
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r requirements.txt && \
-    rm -rf /tmp/
+    adduser --disabled-password --no-create-home containeruser
 
 # set environment for python-version
 ENV PATH = "/py/bin:$PATH"
