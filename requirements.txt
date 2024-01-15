@@ -1,3 +1,4 @@
 pyserial>=3.5
 flask==3.0.0
-flask-restful
+Flask-API>=3.1
+flask-restful>=0.3.10
