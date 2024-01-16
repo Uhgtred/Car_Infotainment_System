@@ -16,7 +16,7 @@ ENV PATH = "/py/bin:$PATH"
 
 ## Install dependencies
 RUN py/bin/pip install virtualenv && \
-    python -m venv /py/venv && \
+    py/python -m venv /py/venv && \
     /py/python venv/Scripts/activate && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r requirements.txt && \
