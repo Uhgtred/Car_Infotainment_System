@@ -15,10 +15,10 @@ EXPOSE 8000
 ENV PATH = "/py/bin:$PATH"
 
 ## Install dependencies
-RUN python -m venv /py/venv && \
-    /py/venv/Scripts/activate && \
-    /py/bin/pip install --upgrade pip && \
-    /py/bin/pip install -r requirements.txt && \
+RUN python -m venv /venv && \
+#    /py/venv/Scripts/activate && \
+    /venv/bin/pip install --upgrade pip && \
+    /venv/bin/pip install -r requirements.txt && \
     adduser --disabled-password --no-create-home containeruser
 
 # setting the user for the container
