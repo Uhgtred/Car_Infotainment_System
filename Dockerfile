@@ -9,14 +9,13 @@ ENTRYPOINT ["top", "-b"]
 # Copy application's code into the container
 COPY . /app
 WORKDIR /app
-EXPOSE 8000
+EXPOSE 2000
 
 # set environment for python-version
 ENV PATH = "/py/bin:$PATH"
 
 ## Install dependencies
 RUN python -m venv /venv && \
-#    /py/venv/Scripts/activate && \
     /venv/bin/pip install --upgrade pip && \
     /venv/bin/pip install -r requirements.txt && \
     adduser --disabled-password --no-create-home containeruser

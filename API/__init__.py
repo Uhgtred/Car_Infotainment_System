@@ -2,4 +2,4 @@
 # @author: Markus Kösters
 
 from .RequestSocket import RequestSocket
-from .main import main
+from .main import Main

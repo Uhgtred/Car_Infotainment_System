@@ -1,21 +1,27 @@
 #!/usr/bin/env python3
 # @author: Markus Kösters
 
+import threading
 from flask import Flask
 from flask_restful import Api
 
 from API import RequestSocket
+from API.StopServer import StopServer
 
 
-class main:
-
-    __resources: dict = {RequestSocket: '/getSocketPort'}
+class Main:
+    """
+    Main class for setting up and starting the Flask application and API.
+    """
+    __app = Flask(__name__)
+    __resources: dict = {
+        RequestSocket: '/getSocketAddress',
+        StopServer: '/shutdown'
+    }
 
     def __init__(self):
-        app = Flask('InfotainmentAPI')
-        self.api = Api(app)
-        self.add_routes()
-        app.run(host='127.0.0.1', port=2000)
+        self.app = Flask('InfotainmentAPI')
+        self.api = Api(self.app)
 
     def add_routes(self) -> None:
         """
@@ -24,6 +30,7 @@ class main:
         for resource in self.__resources:
             self.api.add_resource(resource, self.__resources.get(resource))
 
+    @property
     def getResources(self) -> dict:
         """
         Getter-method for the possible requests to th api.
@@ -31,6 +38,17 @@ class main:
         """
         return self.__resources
 
+    def main(self) -> None:
+        """
+        Main method that starts the api server.
+        """
+        thread = threading.Thread(target=self.runServer)
+        thread.start()
+
+    def runServer(self) -> None:
+        self.add_routes()
+        self.app.run(host='127.0.0.1', port=2000)
+
 
 if __name__ == '__main__':
-    instance = main()
+    Main().main()
