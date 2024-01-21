@@ -6,7 +6,7 @@ from flask import Flask
 from flask_restful import Api
 
 from API import RequestSocket
-from API.StopServer import StopServer
+from API.StopServer import RestartServer
 
 
 class Main:
@@ -16,7 +16,7 @@ class Main:
     __app = Flask(__name__)
     __resources: dict = {
         RequestSocket: '/getSocketAddress',
-        StopServer: '/shutdown'
+        RestartServer: '/restartAPIServer'
     }
 
     def __init__(self):
