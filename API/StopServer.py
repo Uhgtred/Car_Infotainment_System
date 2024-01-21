@@ -9,6 +9,7 @@ from flask_restful import Resource
 class RestartServer(Resource):
     """
     Class to create a direct socket-connection to the server.
+    Source: https://gist.github.com/eyJhb/9668061f06163421b5b46b61f41d2c48
     """
 
     def get(self) -> Response:

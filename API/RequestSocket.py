@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # @author: Markus Kösters
+
 from flask import jsonify, Response
 from flask_restful import Resource
 
