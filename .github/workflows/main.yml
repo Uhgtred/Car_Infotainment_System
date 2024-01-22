@@ -17,4 +17,3 @@ jobs:
 
       - name: Build Docker image
         run: docker build . --file Dockerfile --tag my-application
-        
