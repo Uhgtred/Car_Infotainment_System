@@ -1,24 +1,26 @@
 FROM ubuntu:latest
 FROM python:latest
-LABEL authors="markus"
+LABEL authors="Markus"
 
-ENTRYPOINT ["top", "-b"]
+# Copy requirements to app-folder
+COPY requirements.txt /app/
+WORKDIR /app/
 
-# Dockerfile
-
-# Copy application's code into the container
-COPY . /app
-WORKDIR /app
+# open specified port to the outside
+ENV PORT=2000
 EXPOSE 2000
 
-## Install dependencies
-RUN python -m venv /venv && \
-    /venv/bin/pip install --upgrade pip && \
-    /venv/bin/pip install -r requirements.txt && \
-    adduser --disabled-password --no-create-home containeruser
+# Install dependencies
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
+
+# Copy SourceCode to app-folder
+COPY . /app/
 
 # set environment for python-version
-ENV PATH = "/py/bin:$PATH"
+ENV PATH = "$PATH:/app/py/bin"
 
 # setting the user for the container
-USER containeruser
+#USER containeruser
+
+CMD ["python", "-m", "unittest", "discover", "-s", "", "-p", "*test_*.py"]
