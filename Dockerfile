@@ -3,7 +3,7 @@ FROM python:latest
 LABEL authors="Markus"
 
 # Copy requirements to app-folder
-#COPY requirements.txt /app/
+COPY requirements.txt /
 
 # open specified port to the outside
 ENV PORT=2000
@@ -16,6 +16,7 @@ RUN pip install --upgrade pip && \
 # Copy SourceCode to app-folder
 COPY . /app/
 WORKDIR /app/
+
 
 ## set environment for python-version
 #ENV PATH = "$PATH:/app/"
