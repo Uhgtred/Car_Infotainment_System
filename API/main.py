@@ -13,6 +13,17 @@ class Main:
     """
     Main class for setting up and starting the Flask application and API.
     """
+
+    """
+    from multiprocessing import Process
+
+    server = Process(target=app.run)
+    server.start()
+    # ...
+    server.terminate()
+    server.join()
+    """
+
     __app = Flask(__name__)
     __resources: dict = {
         RequestSocket: '/getSocketAddress',
