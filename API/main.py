@@ -29,12 +29,13 @@ class Main:
         RequestSocket: '/getSocketAddress',
         RestartServer: '/restartAPIServer'
     }
+    __process: Process = None
 
     def __init__(self):
         self.app = Flask('InfotainmentAPI')
         self.api = Api(self.app)
 
-    def add_routes(self) -> None:
+    def __addRoutes(self) -> None:
         """
         Method that adds routes to the api instance.
         """
@@ -44,22 +45,25 @@ class Main:
     @property
     def getResources(self) -> dict:
         """
-        Getter-method for the possible requests to th api.
+        Getter-method for the possible requests to the api.
         :return: Dictionary with the methods available for the api and their url.
         """
         return self.__resources
 
-    def main(self) -> None:
-        """
-        Main method that starts the api server.
-        """
-        thread = threading.Thread(target=self.runServer)
-        thread.start()
-
     def runServer(self) -> None:
-        self.add_routes()
-        self.app.run(host='127.0.0.1', port=2000)
+        """
+        Method that starts the api server in a separate process and adds routes to the api instance.
+        """
+        self.__addRoutes()
+        self.__process = Process(target = self.app.run(host='127.0.0.1', port=2000))
+        self.__process.start()
 
-
-if __name__ == '__main__':
-    Main().main()
+    @classmethod
+    def stopServer(cls) -> None:
+        """
+        Method for stopping the process that the api server is running on.
+        """
+        if cls.__process is not None:
+            cls.__process.terminate()
+            cls.__process.join()
+            cls.__process = None
