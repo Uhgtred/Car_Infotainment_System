@@ -23,4 +23,4 @@ ENV PATH = "$PATH:/app/py/bin"
 # setting the user for the container
 #USER containeruser
 
-CMD ["python", "-m", "unittest", "discover", "-s", "", "-p", "*test_*.py"]
+#CMD ["python", "-m", "unittest", "discover", "-s", "", "-p", "*test_*.py"]
