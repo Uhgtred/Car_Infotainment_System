@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build Docker image
-        run: docker build . --file Dockerfile --tag my-application
+        run: docker build . --file Dockerfile --tag car_infotainment_image
 
       - name: Run unit tests in Docker container
         run: python -m unittest discover -s "" -p "*test_*.py"

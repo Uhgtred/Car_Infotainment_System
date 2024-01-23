@@ -18,7 +18,7 @@ RUN pip install --upgrade pip && \
 COPY . /app/
 
 # set environment for python-version
-ENV PATH = "$PATH:/app/py/bin"
+ENV PATH = "$PATH:/app/"
 
 # setting the user for the container
 #USER containeruser
