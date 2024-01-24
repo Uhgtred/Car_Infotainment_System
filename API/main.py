@@ -6,7 +6,7 @@ from multiprocessing import Process
 from flask import Flask
 from flask_restful import Api
 
-from API.RequestSocket import RequestSocket
+from API import RequestSocket
 from API.StopServer import RestartServer
 
 
