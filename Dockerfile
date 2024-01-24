@@ -12,7 +12,7 @@ ENV PORT=2000
 EXPOSE 2000
 
 # Install dependencies
-RUN python -m venv /app/venv && \
+RUN python -m venv /app/ && \
     /app/bin/pip install --upgrade pip && \
     /app/bin/pip install -r requirements.txt
 
