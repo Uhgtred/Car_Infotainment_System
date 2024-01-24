@@ -18,10 +18,15 @@ jobs:
       - name: Build Docker image
         run: docker build . --file Dockerfile --tag car_infotainment_image
 
-      - name: Set Python Environment
-        run: echo "PYTHONPATH=$PYTHONPATH:/app/venv"
-        env: 
-          PYTHONPATH: /app/venv/bin
+      - name: Install dependencies
+        run: |
+            python -m venv venv
+            source venv/bin/activate
+            pip install --upgrade pip
+            pip install -r requirements.txt
+
+      - name: Set PATH environment variable
+        run: echo "PATH=$PATH:/app/venv/bin" >> $GITHUB_ENV
 
       - name: Run unit tests in Docker container
-        run: python -m unittest discover -s "" -p "*test_*.py"
+        run: python -m unittest discover -v
