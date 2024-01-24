@@ -15,6 +15,7 @@ EXPOSE 2000
 RUN python -m venv /app/ && \
     source /app/bin/activate && \
     /app/bin/pip install --upgrade pip && \
+    ls /app/ && \
     /app/bin/pip install -r /app/requirements.txt
 
 # Copy SourceCode to app-folder
