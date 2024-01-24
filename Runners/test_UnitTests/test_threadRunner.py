@@ -17,13 +17,6 @@ class MyTestCase(unittest.TestCase):
         self.testRunner.runTask(testTask, ['test', 'test2'])
         assert 'testTask_thread' in self.testRunner._Threads__threads
 
-    def test_threadClosing(self):
-        """
-        TODO: implement this test
-        :return:
-        """
-
-
 
 if __name__ == '__main__':
     unittest.main()

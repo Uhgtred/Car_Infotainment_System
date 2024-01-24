@@ -18,7 +18,7 @@ class MockSocket:
             message = cls.buffer.pop(0)
             if len(message[messageSize:]) > 0:
                 cls.buffer.append(message[messageSize:])
-            return message[:messageSize]
+            return message[:messageSize]    
         else:
             return None
 

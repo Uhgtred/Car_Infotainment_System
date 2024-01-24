@@ -10,11 +10,15 @@ from . import SocketConfigs
 
 class UdpSocket(Bus):
 
+    # Todo: Implement possibility to close Socket. It will be necessary to remove it from the openPorts list as well.
+    #       Also there needs to be a limit on how many sockets can be opened simultaneously!
+    __openSocketPorts: list = []
+
     def __init__(self, config: SocketConfigs.UdpSocketConfig):
         sockLibrary = config.busLibrary
         self.sock = None
         self.__messageSize = config.messageSize
-        self.__address = (config.IPAddress, config.port)
+        self.__address = config.IPAddress
         self._setupSocket(sockLibrary)
 
     def readBus(self) -> bytes:
@@ -46,8 +50,13 @@ class UdpSocket(Bus):
         Private Method for setting up UDP-socket.
         :param sock: socket that will be setup and bound.
         """
+        # dynamically providing socket-ports for requested sockets.
+        sockPort = 2001
+        while sockPort in self.__openSocketPorts:
+            sockPort += 1
         self.sock = sock.socket(sock.AF_INET, sock.SOCK_DGRAM)
-        self.sock.bind(self.__address)
+        self.sock.bind((self.__address, sockPort))
+        self.__openSocketPorts.append(sockPort)
 
     def __receiver(self, msgLength: int) -> bytes:
         """

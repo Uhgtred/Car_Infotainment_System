@@ -20,10 +20,10 @@ class BusFactory:
         return SerialBus(config)
 
     @staticmethod
-    def produceUdpSocket() -> Tcp_Udp_sockets.UdpSocket:
+    def produceUdpSocket(ipAddress='127.0.0.1', messageSize=4096) -> Tcp_Udp_sockets.UdpSocket:
         """
         Method for creating an instance of a Udp-socket connection.
         :return: Socket-instance.
         """
-        config = SocketConfigs.UdpSocketConfig(5001, '127.0.0.1', 4096)
+        config = SocketConfigs.UdpSocketConfig(IPAddress=ipAddress, messageSize=messageSize)
         return Tcp_Udp_sockets.UdpSocket(config)

@@ -1,31 +1,35 @@
 FROM ubuntu:latest
-FROM python:latest
-LABEL authors="markus"
+#FROM python:latest
+LABEL authors="Markus"
 
-ENTRYPOINT ["top", "-b"]
+# Install python and pip
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip && \
+    apt-get install -y python3-venv && \
+    rm -rf /var/lib/apt/lists/*
 
-# Dockerfile
+# Copy requirements to app-folder
+COPY ./requirements.txt /app/
+WORKDIR /app/
 
-# Start from the Python latest image
 
-COPY ./requirements.txt /tmp/requirements.txt
-# Copy the rest of your application's code into the container
-COPY . /app
-WORKDIR /app
-EXPOSE 8000
+# open specified port to the outside
+ENV PORT=2000
+EXPOSE 2000
+
 # Install dependencies
-COPY requirements.txt ./
+RUN python3 -m venv /app/venv && \
+    /app/venv/bin/pip install --upgrade pip && \
+    /app/venv/bin/pip install -r /app/requirements.txt
 
-RUN python -m venv /py && \
-    /py/bin/pip install --upgrade pip && \
-    python -m venv /py && \
-    /py/bin/pip install --upgrade pip && \
-    /py/bin/pip install -r /tmp/requirements.txt && \
-    rm -rf /tmp/
+# Copy SourceCode to app-folder
+COPY ../ /app/
 
-ENV PATH = "/py/bin:$PATH"
-# Run command
-CMD [ "python", "-m", "unittest"]
-#, "discover", "-s", "tests" ]
 
-USER containeruser
+## set environment for python-version
+ENV PATH="/app/venv/bin:${PATH}"
+
+# setting the user for the container
+#USER containeruser
+
+#CMD ["python", "-m", "unittest", "discover", "-s", "", "-p", "*test_*.py"]

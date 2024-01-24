@@ -39,6 +39,6 @@ class BusInterfaceFactory:
         Method for creating an instance of an udp-socket.
         :return:
         """
-        encoding = EncodingFactory.socketEncoding()  # needs to get its own encoding
-        busModule = BusFactory.produceUdpSocket()
+        encoding = EncodingFactory.socketEncoding()
+        busModule = BusFactory.produceUdpSocket()  # Todo: make check if some socket is already running on that port, could be the wrong location for that here!
         return cls.produceBusTransceiver(busModule, encoding)
