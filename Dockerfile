@@ -13,6 +13,7 @@ EXPOSE 2000
 
 # Install dependencies
 RUN python -m venv /app/ && \
+    source /app/bin/activate && \
     /app/bin/pip install --upgrade pip && \
     /app/bin/pip install -r requirements.txt
 
