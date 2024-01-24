@@ -20,7 +20,7 @@ COPY . /app/
 
 
 ## set environment for python-version
-ENV PATH = "$PATH:/app/"
+ENV PYTHONPATH = "/app/"
 
 # setting the user for the container
 #USER containeruser
