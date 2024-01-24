@@ -12,8 +12,9 @@ ENV PORT=2000
 EXPOSE 2000
 
 # Install dependencies
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+RUN python -m venv /app/venv && \
+    /app/bin/pip install --upgrade pip && \
+    /app/bin/pip install -r requirements.txt
 
 # Copy SourceCode to app-folder
 COPY . /app/
@@ -25,4 +26,4 @@ ENV PYTHONPATH = "/app/"
 # setting the user for the container
 #USER containeruser
 
-CMD ["python", "-m", "unittest", "discover", "-s", "", "-p", "*test_*.py"]
+#CMD ["python", "-m", "unittest", "discover", "-s", "", "-p", "*test_*.py"]
