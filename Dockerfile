@@ -14,7 +14,7 @@ EXPOSE 2000
 # Install dependencies
 RUN python -m venv /app/ && \
     source /app/bin/activate && \
-    /app/bin/pip install --upgrade pip && \
+    /app/venv/bin/pip install --upgrade pip && \
 #    /app/bin/pip install -r /app/requirements.txt
 
 # Copy SourceCode to app-folder
