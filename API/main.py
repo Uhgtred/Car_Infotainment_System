@@ -46,7 +46,7 @@ class Main:
         Method that starts the api server in a separate process and adds routes to the api instance.
         """
         self.__addRoutes()
-        self.__process = Process(target=self.__serverSetup)
+        self.__process = Process(target=self.__serverSetup, daemon=True)
         self.__process.start()
 
     def __serverSetup(self) -> None:
@@ -61,6 +61,5 @@ class Main:
         Method for stopping the process that the api server is running on.
         """
         if cls.__process is not None:
-            cls.__process.terminate()
-            cls.__process.join()
+            cls.__process.kill()
             cls.__process = None

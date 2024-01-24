@@ -5,11 +5,10 @@ import time
 import unittest
 import requests
 
-from API import RequestSocket, Main
+from API import Main
 
 
 class test_RequestSocket(unittest.TestCase):
-    socketRequest = RequestSocket()
     mainObject = None
 
     def setUp(self):
