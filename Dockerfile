@@ -3,7 +3,9 @@ FROM python:latest
 LABEL authors="Markus"
 
 # Copy requirements to app-folder
-COPY requirements.txt /
+COPY requirements.txt /app/
+WORKDIR /app/
+
 
 # open specified port to the outside
 ENV PORT=2000
@@ -15,13 +17,12 @@ RUN pip install --upgrade pip && \
 
 # Copy SourceCode to app-folder
 COPY . /app/
-WORKDIR /app/
 
 
 ## set environment for python-version
-#ENV PATH = "$PATH:/app/"
+ENV PATH = "$PATH:/app/"
 
 # setting the user for the container
 #USER containeruser
 
-#CMD ["python", "-m", "unittest", "discover", "-s", "", "-p", "*test_*.py"]
+CMD ["python", "-m", "unittest", "discover", "-s", "", "-p", "*test_*.py"]

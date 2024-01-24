@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # @author: Markus Kösters
 
-import threading
+from multiprocessing import Process
+
 from flask import Flask
 from flask_restful import Api
 
@@ -14,16 +15,6 @@ class Main:
     Main class for setting up and starting the Flask application and API.
     """
 
-    """
-    from multiprocessing import Process
-
-    server = Process(target=app.run)
-    server.start()
-    # ...
-    server.terminate()
-    server.join()
-    """
-
     __app = Flask(__name__)
     __resources: dict = {
         RequestSocket: '/getSocketAddress',
@@ -32,8 +23,8 @@ class Main:
     __process: Process = None
 
     def __init__(self):
-        self.app = Flask('InfotainmentAPI')
-        self.api = Api(self.app)
+        self.__app = Flask('InfotainmentAPI')
+        self.api = Api(self.__app)
 
     def __addRoutes(self) -> None:
         """
@@ -55,8 +46,14 @@ class Main:
         Method that starts the api server in a separate process and adds routes to the api instance.
         """
         self.__addRoutes()
-        self.__process = Process(target = self.app.run(host='127.0.0.1', port=2000))
+        self.__process = Process(target=self.__serverSetup)
         self.__process.start()
+
+    def __serverSetup(self) -> None:
+        """
+        Internal method to setup server-credentials.
+        """
+        self.__app.run(host='127.0.0.1', port=2000)
 
     @classmethod
     def stopServer(cls) -> None:
