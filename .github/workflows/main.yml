@@ -29,4 +29,4 @@ jobs:
         run: echo "PATH=$PATH:/app/venv/bin" >> $GITHUB_ENV
 
       - name: Run unit tests in Docker container
-        run: docker run --rm app sh -c "python -m unittest discover -v"
+        run: docker run --rm Car_Infotainment_System sh -c "python -m unittest discover -v"
